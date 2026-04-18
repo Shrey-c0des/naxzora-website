@@ -280,18 +280,18 @@ const db = {
     },
 
     // Brochure Requests
-    async addBrochureRequest(name, email, phone, company) {
+    async addBrochureRequest(name, email, mobile, city) {
         if (useJSON) {
             const data = getJSONData();
             const id = data.brochure_requests.length > 0 ? Math.max(...data.brochure_requests.map(b => b.id)) + 1 : 1;
-            const newRequest = { id, name, email, phone, company, created_at: new Date() };
+            const newRequest = { id, name, email, mobile, city, created_at: new Date() };
             data.brochure_requests.push(newRequest);
             saveJSONData();
             return id;
         }
         const [result] = await pool.query(
-            'INSERT INTO brochure_requests (name, email, phone, company) VALUES (?, ?, ?, ?)',
-            [name, email, phone, company]
+            'INSERT INTO brochure_requests (name, email, mobile, city) VALUES (?, ?, ?, ?)',
+            [name, email, mobile, city]
         );
         return result.insertId;
     },

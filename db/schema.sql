@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS brochure_requests (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL,
-    phone VARCHAR(20),
-    company VARCHAR(100),
+    mobile VARCHAR(20),
+    city VARCHAR(100),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

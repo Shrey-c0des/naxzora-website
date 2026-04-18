@@ -5,8 +5,8 @@ const db = require('../db/connection');
 // Handle brochure request
 router.post('/', async (req, res) => {
     try {
-        const { name, email, phone, company } = req.body;
-        await db.addBrochureRequest(name, email, phone, company);
+        const { name, email, mobile, city } = req.body;
+        await db.addBrochureRequest(name, email, mobile, city);
         
         // After saving, redirect to the actual PDF file
         res.redirect('/naxzora-brochure.pdf');

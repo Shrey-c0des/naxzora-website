@@ -149,8 +149,8 @@
                         <th>Date</th>
                         <th>Name</th>
                         <th>Email</th>
-                        <th>Phone</th>
-                        <th>Company</th>
+                        <th>Mobile</th>
+                        <th>City</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -159,8 +159,8 @@
                         <td style="font-size: 0.8rem;"><%= new Date(req.created_at).toLocaleDateString() %></td>
                         <td><strong><%= req.name %></strong></td>
                         <td><%= req.email %></td>
-                        <td><%= req.phone %></td>
-                        <td><%= req.company %></td>
+                        <td><%= req.mobile %></td>
+                        <td><%= req.city %></td>
                     </tr>
                     <% }) %>
                     <% if (brochureRequests.length === 0) { %>
