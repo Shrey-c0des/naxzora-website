@@ -73,3 +73,25 @@ INSERT INTO products (name, slug, category_id, description, features, material, 
 ('Horizon Wall Hung Basin', 'horizon-wall-basin', 6, 'The Horizon wall-hung basin is a statement piece in modern bathroom design. Its clean lines and generous bowl create a perfect balance between form and function.', '["Wall hung installation","Overflow protection","Pre-drilled tap hole","Vitreous china body","Scratch resistant glaze"]', 'Ceramic', 'White', '/images/products/horizon-wall-basin.jpg', '["/images/products/horizon-wall-basin.jpg"]', TRUE),
 
 ('Summit One-Piece WC', 'summit-one-piece-wc', 6, 'The Summit one-piece water closet features a rimless flushing system for superior hygiene. Dual-flush mechanism saves water without compromising performance.', '["Rimless flush technology","Dual flush 3L/6L","Soft close seat","S-trap / P-trap options","Easy clean glaze"]', 'Ceramic', 'White', '/images/products/summit-wc.jpg', '["/images/products/summit-wc.jpg"]', FALSE);
+
+-- Inquiries (Contact Form) Table
+CREATE TABLE IF NOT EXISTS inquiries (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    phone VARCHAR(20),
+    subject VARCHAR(200),
+    message TEXT NOT NULL,
+    status VARCHAR(20) DEFAULT 'New',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Brochure Requests Table
+CREATE TABLE IF NOT EXISTS brochure_requests (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    phone VARCHAR(20),
+    company VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

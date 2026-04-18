@@ -70,7 +70,15 @@ router.get('/', isAuthenticated, async (req, res) => {
     try {
         const categories = await db.getCategories();
         const products = await db.getProducts();
-        res.render('admin/dashboard', { categories, products });
+        const inquiries = await db.getInquiries();
+        const brochureRequests = await db.getBrochureRequests();
+        
+        res.render('admin/dashboard', { 
+            categories, 
+            products, 
+            inquiries, 
+            brochureRequests 
+        });
     } catch (err) {
         console.error(err);
         res.status(500).send('Server Error');

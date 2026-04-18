@@ -252,6 +252,56 @@ const db = {
 
         await pool.query('DELETE FROM products WHERE id = ?', [id]);
         return true;
+    },
+
+    // Inquiries (Contact Form)
+    async addInquiry(name, email, phone, subject, message) {
+        if (useJSON) {
+            const data = getJSONData();
+            const id = data.inquiries.length > 0 ? Math.max(...data.inquiries.map(i => i.id)) + 1 : 1;
+            const newInquiry = { id, name, email, phone, subject, message, status: 'New', created_at: new Date() };
+            data.inquiries.push(newInquiry);
+            saveJSONData();
+            return id;
+        }
+        const [result] = await pool.query(
+            'INSERT INTO inquiries (name, email, phone, subject, message) VALUES (?, ?, ?, ?, ?)',
+            [name, email, phone, subject, message]
+        );
+        return result.insertId;
+    },
+
+    async getInquiries() {
+        if (useJSON) {
+            return getJSONData().inquiries.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        }
+        const [rows] = await pool.query('SELECT * FROM inquiries ORDER BY created_at DESC');
+        return rows;
+    },
+
+    // Brochure Requests
+    async addBrochureRequest(name, email, phone, company) {
+        if (useJSON) {
+            const data = getJSONData();
+            const id = data.brochure_requests.length > 0 ? Math.max(...data.brochure_requests.map(b => b.id)) + 1 : 1;
+            const newRequest = { id, name, email, phone, company, created_at: new Date() };
+            data.brochure_requests.push(newRequest);
+            saveJSONData();
+            return id;
+        }
+        const [result] = await pool.query(
+            'INSERT INTO brochure_requests (name, email, phone, company) VALUES (?, ?, ?, ?)',
+            [name, email, phone, company]
+        );
+        return result.insertId;
+    },
+
+    async getBrochureRequests() {
+        if (useJSON) {
+            return getJSONData().brochure_requests.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        }
+        const [rows] = await pool.query('SELECT * FROM brochure_requests ORDER BY created_at DESC');
+        return rows;
     }
 };
 

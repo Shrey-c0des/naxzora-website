@@ -33,21 +33,7 @@ app.use('/contact', require('./routes/contact'));
 app.use('/about', require('./routes/about'));
 app.use('/admin', require('./routes/admin'));
 
-// Brochure Download Handler
-app.post('/brochure', (req, res) => {
-    const { name, mobile, email, city } = req.body;
-    console.log('📥 Brochure Download Request:', { name, mobile, email, city });
-    
-    // Path to the placeholder brochure (or real one when uploaded)
-    const brochurePath = path.join(__dirname, 'public', 'naxzora-brochure.pdf');
-    
-    res.download(brochurePath, 'NAXZORA_Brochure.pdf', (err) => {
-        if (err) {
-            console.error('Error downloading brochure:', err);
-            res.status(500).send('Error downloading file.');
-        }
-    });
-});
+app.use('/brochure', require('./routes/brochure'));
 
 // 404 handler
 app.use((req, res) => {
