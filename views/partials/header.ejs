@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/images/panda_face.png">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+    <div class="nav-overlay" id="nav-overlay"></div>
+    <div class="container nav-container" style="position: relative;">
+        <a href="/" class="logo">
+            <img src="/images/logo_left.png" alt="NAXZORA Logo">
+        </a>
+        
+        <!-- Waves on top right -->
+        <img src="/images/logo_waves.png" alt="NAXZORA Waves" class="nav-waves">
+        
+        <ul class="nav-links" id="nav-links">
+            <li><a href="/" class="<%= typeof currentPage !== 'undefined' && currentPage === 'home' ? 'active' : '' %>">Home</a></li>
+            <li><a href="/about" class="<%= typeof currentPage !== 'undefined' && currentPage === 'about' ? 'active' : '' %>">About</a></li>
+            <li><a href="/products" class="<%= typeof currentPage !== 'undefined' && currentPage === 'products' ? 'active' : '' %>">Products</a></li>
+            <li><a href="/contact" class="<%= typeof currentPage !== 'undefined' && currentPage === 'contact' ? 'active' : '' %>">Contact</a></li>
+            <li><button class="btn" id="openBrochureModal" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Download Brochure</button></li>
+        </ul>
+
+        <button class="mobile-menu-btn" id="mobile-menu-btn">
+            <i data-lucide="menu"></i>
+        </button>
+    </div>
+</nav>
+
+<!-- Brochure Modal -->
+<div id="brochureModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" id="closeBrochureModal">&times;</span>
+        <h2 style="margin-bottom: 1rem; color: var(--primary);">Download Brochure</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Please provide your details to download the latest NAXZORA product brochure.</p>
+        
+        <form action="/brochure" method="POST" id="brochureForm">
+            <div style="margin-bottom: 1rem;">
+                <label for="b_name" style="display: block; margin-bottom: 0.3rem; color: var(--text-secondary); font-size: 0.9rem;">Name *</label>
+                <input type="text" id="b_name" name="name" required class="form-input">
+            </div>
+            <div style="margin-bottom: 1rem;">
+                <label for="b_mobile" style="display: block; margin-bottom: 0.3rem; color: var(--text-secondary); font-size: 0.9rem;">Mobile Number *</label>
+                <input type="tel" id="b_mobile" name="mobile" required class="form-input">
+            </div>
+            <div style="margin-bottom: 1rem;">
+                <label for="b_email" style="display: block; margin-bottom: 0.3rem; color: var(--text-secondary); font-size: 0.9rem;">Email Address *</label>
+                <input type="email" id="b_email" name="email" required class="form-input">
+            </div>
+            <div style="margin-bottom: 1.5rem;">
+                <label for="b_city" style="display: block; margin-bottom: 0.3rem; color: var(--text-secondary); font-size: 0.9rem;">City *</label>
+                <input type="text" id="b_city" name="city" required class="form-input">
+            </div>
+            <button type="submit" class="btn" style="width: 100%;">Download Now</button>
+        </form>
+    </div>
+</div>
+
+<main>

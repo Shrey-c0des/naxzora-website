@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - NAXZORA</title>
+    <link rel="icon" type="image/png" href="/images/panda_face.png">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        body { display: flex; justify-content: center; align-items: center; height: 100vh; background-color: var(--border-light); }
+        .login-card { background: #fff; padding: 2rem; border-radius: var(--radius-md); box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; }
+        .login-card input { width: 100%; padding: 0.8rem; margin-bottom: 1rem; border: 1px solid var(--border); border-radius: var(--radius-sm); }
+        .error { color: #e11d48; margin-bottom: 1rem; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <h2 style="color: var(--primary); margin-bottom: 1.5rem;">Admin Access</h2>
+        <% if (error) { %>
+            <p class="error"><%= error %></p>
+        <% } %>
+        <form action="/admin/login" method="POST">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit" class="btn" style="width: 100%;">Login</button>
+        </form>
+        <div style="margin-top: 1rem;">
+            <a href="/" style="font-size: 0.9rem; color: var(--text-secondary);">← Back to Website</a>
+        </div>
+    </div>
+</body>
+</html>

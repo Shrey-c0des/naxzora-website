@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - NAXZORA</title>
+    <link rel="icon" type="image/png" href="/images/panda_face.png">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        .admin-nav { background: var(--primary); padding: 1rem; color: #fff; display: flex; justify-content: space-between; align-items: center; }
+        .admin-nav a { color: #fff; text-decoration: none; margin-left: 1rem; }
+        .admin-container { padding: 2rem; max-width: 1200px; margin: 0 auto; }
+        .data-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        .data-table th, .data-table td { padding: 1rem; border: 1px solid var(--border); text-align: left; }
+        .data-table th { background: var(--border-light); }
+        .data-table img { height: 40px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="admin-nav">
+        <h2>NAXZORA Admin</h2>
+        <div>
+            <a href="/" target="_blank">View Site</a>
+            <a href="/admin/logout">Logout</a>
+        </div>
+    </div>
+    
+    <div class="admin-container">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 2rem;">
+            <h3>Product Categories (<%= categories.length %>)</h3>
+            <a href="/admin/category/new" class="btn">Add Category</a>
+        </div>
+        
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Slug</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% categories.forEach(cat => { %>
+                    <tr>
+                        <td><%= cat.id %></td>
+                        <td>
+                            <img src="<%= cat.image_url %>" onerror="this.src='https://placehold.co/100x100/f8fafc/005b69?text=Cat'">
+                        </td>
+                        <td><strong><%= cat.name %></strong></td>
+                        <td><%= cat.slug %></td>
+                        <td>
+                            <form action="/admin/category/delete/<%= cat.id %>" method="POST" onsubmit="return confirm('Are you sure you want to delete this category?');" style="display:inline;">
+                                <button type="submit" class="btn btn-outline" style="padding: 0.3rem 0.6rem; font-size: 0.8rem; border-color: #e11d48; color: #e11d48 !important;">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 4rem; margin-bottom: 2rem;">
+            <h3>Products (<%= products.length %>)</h3>
+            <a href="/admin/product/new" class="btn">Add Product</a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Featured</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% products.forEach(prod => { %>
+                    <tr>
+                        <td><%= prod.id %></td>
+                        <td>
+                            <img src="<%= prod.image_url %>" onerror="this.src='https://placehold.co/100x100/f8fafc/005b69?text=Prod'">
+                        </td>
+                        <td><strong><%= prod.name %></strong></td>
+                        <td><%= prod.category_name %></td>
+                        <td><%= prod.price %></td>
+                        <td><%= prod.is_featured ? 'Yes' : 'No' %></td>
+                        <td>
+                            <form action="/admin/product/delete/<%= prod.id %>" method="POST" onsubmit="return confirm('Are you sure you want to delete this product?');" style="display:inline;">
+                                <button type="submit" class="btn btn-outline" style="padding: 0.3rem 0.6rem; font-size: 0.8rem; border-color: #e11d48; color: #e11d48 !important;">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Category - NAXZORA Admin</title>
+    <link rel="icon" type="image/png" href="/images/panda_face.png">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        .admin-nav { background: var(--primary); padding: 1rem; color: #fff; display: flex; justify-content: space-between; align-items: center; }
+        .admin-nav a { color: #fff; text-decoration: none; margin-left: 1rem; }
+        .admin-container { padding: 2rem; max-width: 800px; margin: 0 auto; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; color: var(--text-secondary); }
+        .form-control { width: 100%; padding: 0.8rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: inherit; }
+    </style>
+</head>
+<body>
+    <div class="admin-nav">
+        <h2><a href="/admin" style="margin-left: 0;">← Admin Dashboard</a></h2>
+        <div>
+            <a href="/" target="_blank">View Site</a>
+            <a href="/admin/logout">Logout</a>
+        </div>
+    </div>
+    
+    <div class="admin-container">
+        <h2 style="margin-bottom: 2rem; color: var(--primary);">Add New Category</h2>
+        
+        <form action="/admin/category/new" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="name">Category Name</label>
+                <input type="text" id="name" name="name" required class="form-control" placeholder="e.g. Faucets">
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" rows="4" required class="form-control" placeholder="Brief description of the category..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="image">Category Cover Image</label>
+                <input type="file" id="image" name="image" accept="image/*" required class="form-control">
+            </div>
+            
+            <button type="submit" class="btn">Create Category</button>
+        </form>
+    </div>
+</body>
+</html>

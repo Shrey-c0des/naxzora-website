@@ -1,0 +1,8 @@
+node_modules/
+.env
+.DS_Store
+*.log
+public/images/uploads/*
+!public/images/uploads/.gitkeep
+db/data.json
+naxfiles/stationary_image.png
