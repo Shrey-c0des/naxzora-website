@@ -12,6 +12,7 @@ try {
 
     pool = mysql.createPool({
         host: process.env.DB_HOST || 'localhost',
+        port: process.env.DB_PORT || 3306,
         user: process.env.DB_USER || 'root',
         password: process.env.DB_PASSWORD || '',
         database: process.env.DB_NAME || 'naxzora',
@@ -205,12 +206,12 @@ const db = {
     },
 
     // Add new product
-    async addProduct(categoryId, name, slug, description, price, imageUrl, galleryUrls, features, isFeatured = false) {
+    async addProduct(categoryId, name, slug, description, imageUrl, galleryUrls, features, isFeatured = false) {
         if (useJSON) {
             const data = getJSONData();
             const id = data.products.length > 0 ? Math.max(...data.products.map(p => p.id)) + 1 : 1;
             const newProd = {
-                id, category_id: parseInt(categoryId), name, slug, description, price,
+                id, category_id: parseInt(categoryId), name, slug, description,
                 image_url: imageUrl, gallery: galleryUrls, features, is_featured: isFeatured
             };
             data.products.push(newProd);
@@ -219,8 +220,8 @@ const db = {
         }
 
         const [result] = await pool.query(
-            'INSERT INTO products (category_id, name, slug, description, price, image_url, gallery, features, is_featured) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-            [categoryId, name, slug, description, price, imageUrl, JSON.stringify(galleryUrls), JSON.stringify(features), isFeatured]
+            'INSERT INTO products (category_id, name, slug, description, image_url, gallery, features, is_featured) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+            [categoryId, name, slug, description, imageUrl, JSON.stringify(galleryUrls), JSON.stringify(features), isFeatured]
         );
         return result.insertId;
     },

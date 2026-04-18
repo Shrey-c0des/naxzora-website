@@ -125,7 +125,6 @@ router.post('/product/new', isAuthenticated, upload.array('images', 5), async (r
             name, 
             slug, 
             description, 
-            price || 'On Request', 
             mainImage, 
             gallery, 
             features, 
