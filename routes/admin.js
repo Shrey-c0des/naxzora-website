@@ -168,4 +168,26 @@ router.post('/product/delete/:id', isAuthenticated, async (req, res) => {
     }
 });
 
+// Delete Inquiry
+router.post('/inquiry/delete/:id', isAuthenticated, async (req, res) => {
+    try {
+        await db.deleteInquiry(req.params.id);
+        res.redirect('/admin');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
+
+// Delete Brochure Request
+router.post('/brochure-request/delete/:id', isAuthenticated, async (req, res) => {
+    try {
+        await db.deleteBrochureRequest(req.params.id);
+        res.redirect('/admin');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
+
 module.exports = router;

@@ -115,6 +115,7 @@
                         <th>Subject</th>
                         <th>Message</th>
                         <th>Status</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -129,6 +130,11 @@
                         <td><%= inq.subject %></td>
                         <td style="font-size: 0.9rem; max-width: 300px;"><%= inq.message %></td>
                         <td><span style="padding: 0.2rem 0.5rem; background: #dcfce7; color: #166534; border-radius: 4px; font-size: 0.8rem;"><%= inq.status %></span></td>
+                        <td>
+                            <form action="/admin/inquiry/delete/<%= inq.id %>" method="POST" onsubmit="return confirm('Delete this inquiry?');">
+                                <button type="submit" class="btn btn-outline" style="padding: 0.3rem 0.6rem; font-size: 0.8rem; border-color: #e11d48; color: #e11d48 !important;">Delete</button>
+                            </form>
+                        </td>
                     </tr>
                     <% }) %>
                     <% if (inquiries.length === 0) { %>
@@ -151,6 +157,7 @@
                         <th>Email</th>
                         <th>Mobile</th>
                         <th>City</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -161,6 +168,11 @@
                         <td><%= req.email %></td>
                         <td><%= req.mobile %></td>
                         <td><%= req.city %></td>
+                        <td>
+                            <form action="/admin/brochure-request/delete/<%= req.id %>" method="POST" onsubmit="return confirm('Delete this request?');">
+                                <button type="submit" class="btn btn-outline" style="padding: 0.3rem 0.6rem; font-size: 0.8rem; border-color: #e11d48; color: #e11d48 !important;">Delete</button>
+                            </form>
+                        </td>
                     </tr>
                     <% }) %>
                     <% if (brochureRequests.length === 0) { %>

@@ -302,6 +302,28 @@ const db = {
         }
         const [rows] = await pool.query('SELECT * FROM brochure_requests ORDER BY created_at DESC');
         return rows;
+    },
+
+    async deleteInquiry(id) {
+        if (useJSON) {
+            const data = getJSONData();
+            data.inquiries = data.inquiries.filter(i => i.id !== parseInt(id));
+            saveJSONData();
+            return true;
+        }
+        await pool.query('DELETE FROM inquiries WHERE id = ?', [id]);
+        return true;
+    },
+
+    async deleteBrochureRequest(id) {
+        if (useJSON) {
+            const data = getJSONData();
+            data.brochure_requests = data.brochure_requests.filter(b => b.id !== parseInt(id));
+            saveJSONData();
+            return true;
+        }
+        await pool.query('DELETE FROM brochure_requests WHERE id = ?', [id]);
+        return true;
     }
 };
 
