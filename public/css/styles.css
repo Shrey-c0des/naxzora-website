@@ -121,27 +121,34 @@ img {
     position: relative;
 }
 
-/* Waves on the far RIGHT */
+/* Waves on the far RIGHT — relative to navbar (full screen) */
 .nav-waves {
-    position: absolute;
-    right: -32px;
-    top: -20px;
-    height: 95px;
+    position: fixed;
+    right: 20px;
+    top: 0;
+    height: 90px;
     opacity: 0.7;
     pointer-events: none;
-    z-index: 0;
-    transition: opacity 0.3s ease;
+    z-index: 1001;
+    transition: opacity 0.3s ease, height 0.3s ease;
 }
 
 .navbar.scrolled .nav-waves {
     opacity: 0.4;
+    height: 65px;
 }
 
-/* Logo on the far LEFT */
+/* Logo on the far LEFT — relative to navbar (full screen) */
 .logo {
-    position: absolute;
-    left: 0;
-    z-index: 10;
+    position: fixed;
+    left: 20px;
+    top: 12px;
+    z-index: 1001;
+    transition: top 0.3s ease;
+}
+
+.navbar.scrolled .logo {
+    top: 6px;
 }
 
 .logo img {
