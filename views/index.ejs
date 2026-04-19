@@ -1,45 +1,60 @@
 <%- include('partials/header') %>
 
-<!-- Hero Section -->
-<section class="hero">
-    <div class="hero-bg"></div>
-    <div class="container">
-        <div class="hero-content" style="text-align: center; max-width: 800px; margin: 0 auto;">
-            <span class="pill-badge hero-reveal">Premium Bathroom Hardware</span>
-            <h1 class="hero-reveal delay-1" style="font-size: 3.8rem;">Precision Engineering<br>for Modern Living.</h1>
-            <p class="hero-reveal delay-2">Elevate your space with NAXZORA's premium bathroom fittings and sanitary hardware. Crafted for durability, designed for elegance.</p>
-            <div class="hero-reveal delay-3" style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
-                <a href="/products" class="btn">Explore Collection</a>
-                <a href="/about" class="btn btn-outline">Our Story</a>
-            </div>
+<!-- Hero Slideshow — Full Screen -->
+<section class="hero-slideshow" id="heroSlideshow">
+    <!-- Slide 1 -->
+    <div class="slide active" style="background: linear-gradient(135deg, #004652 0%, #007a8a 40%, #70a3ac 100%);">
+        <div class="container slide-content">
+            <h1 class="slide-heading">A Splash of Elegance<br>for Every Home</h1>
         </div>
+    </div>
+    <!-- Slide 2 -->
+    <div class="slide" style="background: linear-gradient(135deg, #005b69 0%, #3a8f9f 50%, #c8e8ec 100%);">
+        <div class="container slide-content">
+            <h1 class="slide-heading">Precision Engineering<br>for Modern Living.</h1>
+        </div>
+    </div>
+    <!-- Slide 3 -->
+    <div class="slide" style="background: linear-gradient(135deg, #003d47 0%, #005b69 40%, #70a3ac 100%);">
+        <div class="container slide-content">
+            <h1 class="slide-heading">Transform Your Routine<br>into a Relaxing Escape.</h1>
+        </div>
+    </div>
+
+    <!-- Slide Indicators -->
+    <div class="slide-indicators">
+        <span class="indicator active" data-slide="0"></span>
+        <span class="indicator" data-slide="1"></span>
+        <span class="indicator" data-slide="2"></span>
+    </div>
+
+    <!-- Scroll hint -->
+    <div class="scroll-hint">
+        <i data-lucide="chevron-down" style="width: 24px; height: 24px;"></i>
     </div>
 </section>
 
 <!-- Categories Section -->
 <section class="section section-cyan">
     <div class="container text-center">
-        <span class="pill-badge reveal delay-1">Browse By Category</span>
-        <h2 class="reveal delay-2" style="font-size: 2.5rem; margin-bottom: 0.5rem;">Our Categories</h2>
+        <span class="pill-badge reveal">Browse By Category</span>
+        <h2 class="reveal delay-1" style="font-size: 2.5rem; margin-bottom: 0.5rem;">Our Categories</h2>
         <div class="section-divider reveal delay-2"></div>
-        <p class="reveal delay-3" style="color: var(--text-secondary); max-width: 600px; margin: 0 auto var(--space-6);">Explore our comprehensive range of high-quality fittings and hardware for every need.</p>
-        
+        <p class="reveal delay-3" style="color: var(--text-secondary); max-width: 600px; margin: 0 auto var(--space-6);">Explore our comprehensive range of high-quality fittings and hardware.</p>
         <div class="grid">
             <% categories.forEach(category => { %>
                 <a href="/products?category=<%= category.slug %>" class="card">
                     <div class="card-img">
                         <img src="<%= category.image_url %>" alt="<%= category.name %>" onerror="this.src='https://placehold.co/600x400/eaf7f8/005b69?text=<%= category.name.replace(/ /g, '+') %>'">
                     </div>
-                    <div class="card-content">
-                        <h3 class="card-title"><%= category.name %></h3>
-                    </div>
+                    <div class="card-content"><h3 class="card-title"><%= category.name %></h3></div>
                 </a>
             <% }) %>
         </div>
     </div>
 </section>
 
-<!-- Featured Products Section -->
+<!-- Featured Products -->
 <section class="section" style="background: linear-gradient(135deg, #f1f5f9 0%, var(--cyan-bg) 100%);">
     <div class="container">
         <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: var(--space-6);">
@@ -49,7 +64,6 @@
             </div>
             <a href="/products" class="reveal delay-2" style="display: flex; align-items: center; gap: 0.5rem; font-weight: 500;">View All <i data-lucide="arrow-right" style="width: 18px;"></i></a>
         </div>
-
         <div class="grid">
             <% featuredProducts.slice(0, 4).forEach(product => { %>
                 <a href="/products/<%= product.slug %>" class="card">
@@ -66,7 +80,7 @@
     </div>
 </section>
 
-<!-- Stats / CTA Section -->
+<!-- Stats -->
 <section class="section section-cyan-dark" style="padding: var(--space-8) 0;">
     <div class="container text-center">
         <span class="pill-badge pill-badge-light reveal">Why Choose NAXZORA</span>
@@ -80,7 +94,7 @@
     </div>
 </section>
 
-<!-- Brand Mascot Section -->
+<!-- Mascot -->
 <section class="section" style="background: linear-gradient(135deg, #fff 0%, var(--cyan-bg) 100%);">
     <div class="container">
         <div class="grid" style="align-items: center;">
@@ -91,9 +105,7 @@
                 <span class="pill-badge reveal">Brand Mascot</span>
                 <h2 class="reveal delay-1" style="font-size: 2.5rem; margin-bottom: 1rem;">Meet Our Mascot</h2>
                 <div class="section-divider reveal delay-2" style="margin: 0 0 var(--space-3);"></div>
-                <p class="reveal delay-3" style="color: var(--text-secondary); font-size: 1.1rem; line-height: 1.9;">
-                    At NAXZORA, we believe in bringing joy and reliability into every home. Our Panda mascot represents our commitment to being friendly, approachable, and rock-solid in our quality—just like the products we build.
-                </p>
+                <p class="reveal delay-3" style="color: var(--text-secondary); font-size: 1.1rem; line-height: 1.9;">At NAXZORA, we believe in bringing joy and reliability into every home. Our Panda mascot represents our commitment to being friendly, approachable, and rock-solid in our quality.</p>
             </div>
         </div>
     </div>

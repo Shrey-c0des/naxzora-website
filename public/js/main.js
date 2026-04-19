@@ -46,6 +46,39 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ============================================
+    // HERO SLIDESHOW
+    // ============================================
+    const slideshow = document.getElementById('heroSlideshow');
+    if (slideshow) {
+        const slides = slideshow.querySelectorAll('.slide');
+        const indicators = slideshow.querySelectorAll('.indicator');
+        let currentSlide = 0;
+        const INTERVAL = 5000;
+
+        function goToSlide(index) {
+            slides[currentSlide].classList.remove('active');
+            indicators[currentSlide].classList.remove('active');
+            currentSlide = index;
+            slides[currentSlide].classList.add('active');
+            indicators[currentSlide].classList.add('active');
+        }
+
+        let timer = setInterval(() => {
+            goToSlide((currentSlide + 1) % slides.length);
+        }, INTERVAL);
+
+        indicators.forEach(ind => {
+            ind.addEventListener('click', () => {
+                clearInterval(timer);
+                goToSlide(parseInt(ind.dataset.slide));
+                timer = setInterval(() => {
+                    goToSlide((currentSlide + 1) % slides.length);
+                }, INTERVAL);
+            });
+        });
+    }
+
+    // ============================================
     // STAGGERED REVEAL ANIMATION SYSTEM
     // ============================================
     

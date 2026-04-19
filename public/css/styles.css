@@ -355,6 +355,118 @@ img {
 }
 
 /* ============================================
+   HERO SLIDESHOW
+   ============================================ */
+.hero-slideshow {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    min-height: 600px;
+    overflow: hidden;
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slide.active {
+    opacity: 1;
+    z-index: 1;
+}
+
+.slide-content {
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.slide-heading {
+    font-family: var(--font-heading);
+    font-size: 3.5rem;
+    color: #ffffff;
+    line-height: 1.2;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 400;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease 0.3s, transform 0.8s ease 0.3s;
+}
+
+.slide.active .slide-heading {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.slide-indicators {
+    position: absolute;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 10;
+}
+
+.indicator {
+    width: 40px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.indicator.active::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0%;
+    background: #fff;
+    border-radius: 2px;
+    animation: indicatorProgress 5s linear forwards;
+}
+
+@keyframes indicatorProgress {
+    from { width: 0%; }
+    to { width: 100%; }
+}
+
+.scroll-hint {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    color: rgba(255, 255, 255, 0.6);
+    animation: bounceDown 2s ease-in-out infinite;
+}
+
+@keyframes bounceDown {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+}
+
+@media (max-width: 768px) {
+    .slide-heading {
+        font-size: 2rem;
+        letter-spacing: 1px;
+    }
+}
+
+/* ============================================
    GRID & CARDS — Luxurious with Glow
    ============================================ */
 .grid {
