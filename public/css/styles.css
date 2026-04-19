@@ -600,6 +600,30 @@ img {
 }
 
 /* ============================================
+   PARALLAX DARK SECTION
+   ============================================ */
+.parallax-section {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3443 100%);
+    background-attachment: fixed;
+    background-size: cover;
+    position: relative;
+    z-index: 0;
+}
+
+/* The sections before/after have a higher z-index to slide over */
+.parallax-section + section,
+section + .parallax-section {
+    position: relative;
+    z-index: 1;
+}
+
+@media (max-width: 768px) {
+    .parallax-section {
+        background-attachment: scroll;
+    }
+}
+
+/* ============================================
    STAT CARDS — Premium counters
    ============================================ */
 .stat-card {
