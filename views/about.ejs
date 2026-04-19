@@ -1,11 +1,32 @@
 <%- include('partials/header') %>
 
 <!-- Page Banner -->
-<section class="page-banner text-center">
+<section class="page-banner text-center" style="padding-bottom: var(--space-4);">
     <div class="container" style="position: relative; z-index: 1;">
         <span class="pill-badge pill-badge-light hero-reveal">About Our Company</span>
         <h1 class="hero-reveal delay-1" style="font-size: 3.2rem;">Welcome to NAXZORA</h1>
         <p class="hero-reveal delay-2" style="text-transform: uppercase; letter-spacing: 3px; font-size: 0.9rem;">Bathrooms Made Perfect</p>
+    </div>
+</section>
+
+<!-- Dark Showcase Section — Like Probath's chandelier image -->
+<section style="background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0f3443 100%); padding: var(--space-8) 0; text-align: center; position: relative; overflow: hidden;">
+    <div style="position: absolute; inset: 0; background: repeating-linear-gradient(90deg, transparent, transparent 80px, rgba(255,255,255,0.015) 80px, rgba(255,255,255,0.015) 81px); pointer-events: none;"></div>
+    <div class="container" style="position: relative; z-index: 1;">
+        <div class="reveal-scale" style="display: flex; justify-content: center; gap: var(--space-8); align-items: flex-end; flex-wrap: wrap; min-height: 200px;">
+            <div style="text-align: center;">
+                <i data-lucide="droplets" style="width: 48px; height: 48px; color: var(--accent); margin-bottom: 1rem;"></i>
+                <p style="color: rgba(255,255,255,0.5); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px;">Faucets & Taps</p>
+            </div>
+            <div style="text-align: center;">
+                <i data-lucide="shower-head" style="width: 64px; height: 64px; color: rgba(255,255,255,0.8); margin-bottom: 1rem;"></i>
+                <p style="color: rgba(255,255,255,0.5); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px;">Showers</p>
+            </div>
+            <div style="text-align: center;">
+                <i data-lucide="pipette" style="width: 48px; height: 48px; color: var(--accent); margin-bottom: 1rem;"></i>
+                <p style="color: rgba(255,255,255,0.5); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px;">Pipes & Fittings</p>
+            </div>
+        </div>
     </div>
 </section>
 
