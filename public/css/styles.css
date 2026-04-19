@@ -1076,3 +1076,256 @@ section + .parallax-section {
     box-shadow: 0 20px 40px rgba(0, 91, 105, 0.1), 0 0 0 1px rgba(0, 91, 105, 0.05);
     border-color: var(--accent);
 }
+
+/* ============================================
+   RESPONSIVE — Tablet (1024px)
+   ============================================ */
+@media screen and (max-width: 1024px) {
+    .container {
+        padding: 0 var(--space-3);
+    }
+
+    .grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+
+    .grid-2 {
+        gap: var(--space-4);
+    }
+
+    .slide-heading {
+        font-size: 2.8rem;
+    }
+
+    .hero h1 {
+        font-size: 3rem;
+    }
+}
+
+/* ============================================
+   RESPONSIVE — Mobile (768px)
+   ============================================ */
+@media screen and (max-width: 768px) {
+    :root {
+        --space-12: 4rem;
+        --space-8: 2.5rem;
+    }
+
+    /* Mobile Nav */
+    .mobile-menu-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        right: 15px;
+        top: 18px;
+        color: #fff;
+    }
+
+    .navbar.scrolled .mobile-menu-btn {
+        color: var(--primary);
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 280px;
+        height: 100vh;
+        background: #fff;
+        flex-direction: column;
+        padding: 5rem var(--space-4) var(--space-4);
+        gap: 0;
+        z-index: 2000;
+        transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: -10px 0 40px rgba(0,0,0,0.15);
+    }
+
+    .nav-links.active {
+        right: 0;
+    }
+
+    .nav-links li {
+        width: 100%;
+    }
+
+    .nav-links a {
+        color: var(--text-primary) !important;
+        display: block;
+        padding: 1rem 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 0.9rem;
+    }
+
+    .nav-links a::after {
+        display: none;
+    }
+
+    /* Logo & Waves on mobile */
+    .logo {
+        left: 10px;
+        top: 8px;
+    }
+
+    .logo img {
+        height: 55px;
+    }
+
+    .navbar.scrolled .logo img {
+        height: 45px;
+    }
+
+    .nav-waves {
+        right: 10px;
+        height: 65px;
+    }
+
+    .navbar.scrolled .nav-waves {
+        height: 40px;
+    }
+
+    /* Hero Slideshow */
+    .slide-heading {
+        font-size: 2rem;
+        letter-spacing: 1px;
+    }
+
+    .slide-indicators {
+        bottom: 60px;
+    }
+
+    /* Page Banners */
+    .page-banner {
+        padding-top: 100px;
+        padding-bottom: var(--space-4);
+    }
+
+    .page-banner h1 {
+        font-size: 2rem;
+    }
+
+    /* Grids collapse */
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .grid-2 {
+        grid-template-columns: 1fr;
+    }
+
+    /* About page order fix */
+    .grid-2 > div[style*="order: 2"] {
+        order: 1 !important;
+    }
+
+    .grid-2 > div[style*="order: 1"] {
+        order: 2 !important;
+    }
+
+    /* Typography scaling */
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.8rem; }
+    h3 { font-size: 1.3rem; }
+
+    /* Product detail grid */
+    .product-detail-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Buttons */
+    .btn {
+        padding: 0.75rem 1.8rem;
+        font-size: 0.8rem;
+    }
+
+    /* Cards */
+    .card-img {
+        height: 200px;
+    }
+
+    /* Stats */
+    .stat-card h3 {
+        font-size: 2rem;
+    }
+
+    /* Footer */
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-4);
+    }
+
+    /* Scroll to top */
+    .scroll-top-btn {
+        bottom: 1rem;
+        right: 1rem;
+        width: 40px;
+        height: 40px;
+    }
+
+    /* Section padding */
+    .section {
+        padding: var(--space-8) 0;
+    }
+
+    /* Parallax - disable on mobile for performance */
+    .parallax-section {
+        background-attachment: scroll;
+    }
+
+    /* Pill badge */
+    .pill-badge {
+        font-size: 0.65rem;
+        letter-spacing: 2px;
+        padding: 0.3rem 0.8rem;
+    }
+
+    /* Form inputs */
+    .form-input {
+        font-size: 0.9rem;
+    }
+}
+
+/* ============================================
+   RESPONSIVE — Small Mobile (480px)
+   ============================================ */
+@media screen and (max-width: 480px) {
+    .slide-heading {
+        font-size: 1.5rem;
+        letter-spacing: 0.5px;
+        padding: 0 var(--space-2);
+    }
+
+    .page-banner h1 {
+        font-size: 1.6rem;
+    }
+
+    .logo img {
+        height: 45px;
+    }
+
+    .nav-waves {
+        height: 50px;
+    }
+
+    h1 { font-size: 1.6rem; }
+    h2 { font-size: 1.4rem; }
+
+    .btn {
+        padding: 0.65rem 1.5rem;
+        font-size: 0.75rem;
+        width: 100%;
+        text-align: center;
+    }
+
+    .container {
+        padding: 0 var(--space-2);
+    }
+
+    .card-img {
+        height: 180px;
+    }
+
+    .hero-slideshow {
+        min-height: 500px;
+    }
+}
