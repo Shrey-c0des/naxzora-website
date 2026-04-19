@@ -32,6 +32,7 @@ app.use('/products', require('./routes/products'));
 app.use('/contact', require('./routes/contact'));
 app.use('/about', require('./routes/about'));
 app.use('/admin', require('./routes/admin'));
+app.use('/', require('./routes/seo'));
 
 app.use('/brochure', require('./routes/brochure'));
 
