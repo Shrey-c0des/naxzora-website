@@ -147,11 +147,13 @@ img {
 .logo img {
     height: 70px;
     object-fit: contain;
-    transition: height 0.3s ease;
+    transition: height 0.3s ease, filter 0.3s ease;
+    filter: brightness(0) invert(1) drop-shadow(0 0 8px rgba(255,255,255,0.3));
 }
 
 .navbar.scrolled .logo img {
     height: 55px;
+    filter: none;
 }
 
 /* Nav links centered */
@@ -163,13 +165,18 @@ img {
 }
 
 .nav-links a {
-    color: var(--text-primary);
+    color: rgba(255, 255, 255, 0.9);
     font-size: 0.85rem;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 1.5px;
     position: relative;
     padding: 0.5rem 0;
+    transition: color 0.3s ease;
+}
+
+.navbar.scrolled .nav-links a {
+    color: var(--text-primary);
 }
 
 .nav-links a::after {
@@ -189,7 +196,7 @@ img {
 }
 
 .nav-links a:hover {
-    color: var(--primary);
+    color: var(--highlight);
 }
 
 .mobile-menu-btn {
