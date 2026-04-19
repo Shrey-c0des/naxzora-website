@@ -121,10 +121,10 @@ img {
     position: relative;
 }
 
-/* Waves on the far LEFT */
+/* Waves on the far RIGHT */
 .nav-waves {
     position: absolute;
-    left: -32px;
+    right: -32px;
     top: -20px;
     height: 95px;
     opacity: 0.7;
@@ -137,10 +137,10 @@ img {
     opacity: 0.4;
 }
 
-/* Logo on the far RIGHT */
+/* Logo on the far LEFT */
 .logo {
     position: absolute;
-    right: 0;
+    left: 0;
     z-index: 10;
 }
 
@@ -202,7 +202,7 @@ img {
     z-index: 2001;
     padding: 0.5rem;
     position: absolute;
-    left: 0;
+    right: 0;
 }
 
 .nav-overlay {
