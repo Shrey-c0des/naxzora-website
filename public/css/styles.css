@@ -135,7 +135,8 @@ img {
 
 .navbar.scrolled .nav-waves {
     opacity: 0.4;
-    height: 65px;
+    height: 50px;
+    top: 5px;
 }
 
 /* Logo on the far LEFT — relative to navbar (full screen) */
