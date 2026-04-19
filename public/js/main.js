@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
         navOverlay.classList.toggle('active');
         document.body.style.overflow = isMenuOpen ? 'hidden' : 'auto';
         
-        // Toggle icon
         const icon = mobileMenuBtn.querySelector('i');
         if (isMenuOpen) {
             icon.setAttribute('data-lucide', 'x');
@@ -40,15 +39,65 @@ document.addEventListener('DOMContentLoaded', () => {
         navOverlay.addEventListener('click', toggleMenu);
     }
 
-    // Close menu when clicking a link
     navLinks.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => {
             if (isMenuOpen) toggleMenu();
         });
     });
 
-    // Simple Intersection Observer for scroll animations (fade in up)
-    const observer = new IntersectionObserver((entries) => {
+    // ============================================
+    // STAGGERED REVEAL ANIMATION SYSTEM
+    // ============================================
+    
+    // Elements that reveal on scroll
+    const revealClasses = ['.reveal', '.reveal-left', '.reveal-right', '.reveal-scale', '.hero-reveal'];
+    
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                revealObserver.unobserve(entry.target); // Only animate once
+            }
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    
+    revealClasses.forEach(cls => {
+        document.querySelectorAll(cls).forEach(el => {
+            revealObserver.observe(el);
+        });
+    });
+
+    // Cards get staggered reveal
+    const cardObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Find all sibling cards in the same grid
+                const parent = entry.target.closest('.grid');
+                if (parent) {
+                    const cards = parent.querySelectorAll('.card');
+                    cards.forEach((card, index) => {
+                        setTimeout(() => {
+                            card.classList.add('visible');
+                        }, index * 120); // 120ms stagger between cards
+                    });
+                } else {
+                    entry.target.classList.add('visible');
+                }
+                cardObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+
+    // Observe only the first card in each grid to trigger stagger
+    document.querySelectorAll('.grid').forEach(grid => {
+        const firstCard = grid.querySelector('.card');
+        if (firstCard) {
+            cardObserver.observe(firstCard);
+        }
+    });
+
+    // Legacy support: animate-on-scroll
+    const legacyObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.style.opacity = '1';
@@ -60,8 +109,16 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.animate-on-scroll').forEach(el => {
         el.style.opacity = '0';
         el.style.transform = 'translateY(20px)';
-        el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
-        observer.observe(el);
+        el.style.transition = 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+        legacyObserver.observe(el);
+    });
+
+    // Hero: trigger immediately with stagger
+    const heroElements = document.querySelectorAll('.hero-reveal');
+    heroElements.forEach((el, i) => {
+        setTimeout(() => {
+            el.classList.add('visible');
+        }, 300 + (i * 200)); // Start after 300ms, 200ms between each
     });
 
     // Brochure Modal Logic

@@ -43,24 +43,25 @@
 <nav class="navbar" id="navbar">
     <div class="nav-overlay" id="nav-overlay"></div>
     <div class="container nav-container" style="position: relative;">
-        <a href="/" class="logo">
-            <img src="/images/logo_left.png" alt="NAXZORA Logo">
-        </a>
-        
-        <!-- Waves on top right -->
+        <!-- Waves on LEFT side -->
         <img src="/images/logo_waves.png" alt="NAXZORA Waves" class="nav-waves">
         
+        <button class="mobile-menu-btn" id="mobile-menu-btn">
+            <i data-lucide="menu"></i>
+        </button>
+
         <ul class="nav-links" id="nav-links">
             <li><a href="/" class="<%= typeof currentPage !== 'undefined' && currentPage === 'home' ? 'active' : '' %>">Home</a></li>
             <li><a href="/about" class="<%= typeof currentPage !== 'undefined' && currentPage === 'about' ? 'active' : '' %>">About</a></li>
             <li><a href="/products" class="<%= typeof currentPage !== 'undefined' && currentPage === 'products' ? 'active' : '' %>">Products</a></li>
             <li><a href="/contact" class="<%= typeof currentPage !== 'undefined' && currentPage === 'contact' ? 'active' : '' %>">Contact</a></li>
-            <li><button class="btn" id="openBrochureModal" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Download Brochure</button></li>
+            <li><button class="btn" id="openBrochureModal" style="padding: 0.5rem 1rem; font-size: 0.75rem;">Download Brochure</button></li>
         </ul>
 
-        <button class="mobile-menu-btn" id="mobile-menu-btn">
-            <i data-lucide="menu"></i>
-        </button>
+        <!-- Logo on RIGHT side -->
+        <a href="/" class="logo">
+            <img src="/images/logo_left.png" alt="NAXZORA Logo">
+        </a>
     </div>
 </nav>
 

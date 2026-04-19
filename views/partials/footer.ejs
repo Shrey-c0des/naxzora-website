@@ -1,11 +1,16 @@
 </main>
 
+<!-- Scroll to Top Button -->
+<button class="scroll-top-btn" id="scrollTopBtn" title="Back to top">
+    <i data-lucide="chevron-up" style="width: 20px; height: 20px;"></i>
+</button>
+
 <footer class="footer">
     <div class="container">
         <div class="footer-grid">
             <div class="footer-col">
-                <a href="/" class="logo" style="margin-bottom: 1rem; display: inline-block;">NAXZORA</a>
-                <p style="color: var(--text-secondary); font-size: 0.9rem;">Precision Engineering for Modern Living. Premium bathroom fittings and sanitary hardware.</p>
+                <a href="/" style="font-family: var(--font-heading); font-size: 1.8rem; font-weight: 700; color: #fff; display: inline-block; margin-bottom: 1rem; letter-spacing: 2px;">NAXZORA</a>
+                <p style="color: rgba(255,255,255,0.6); font-size: 0.9rem; line-height: 1.7;">Precision Engineering for Modern Living. Premium bathroom fittings and sanitary hardware crafted for the discerning homeowner.</p>
             </div>
             
             <div class="footer-col">
@@ -30,15 +35,15 @@
             <div class="footer-col">
                 <h4>Contact Info</h4>
                 <ul class="footer-links">
-                    <li>naxzorabathimpex@gmail.com</li>
-                    <li>+91 79902 13618</li>
-                    <li>Survey No, 42, Plot No. 6, B/h, Hero Showroom, Gondal Road, Vavdi, Dist. Rajkot, Gujarat - 360004</li>
+                    <li style="display: flex; gap: 0.5rem; align-items: flex-start;"><i data-lucide="mail" style="width: 16px; min-width: 16px; margin-top: 3px; color: var(--highlight);"></i> naxzorabathimpex@gmail.com</li>
+                    <li style="display: flex; gap: 0.5rem; align-items: flex-start;"><i data-lucide="phone" style="width: 16px; min-width: 16px; margin-top: 3px; color: var(--highlight);"></i> +91 79902 13618</li>
+                    <li style="display: flex; gap: 0.5rem; align-items: flex-start;"><i data-lucide="map-pin" style="width: 16px; min-width: 16px; margin-top: 3px; color: var(--highlight);"></i> Survey No. 42, Plot No. 6, Gondal Road, Vavdi, Rajkot, Gujarat - 360004</li>
                 </ul>
             </div>
         </div>
         
         <div class="footer-bottom">
-            <p>&copy; <%= new Date().getFullYear() %> NAXZORA. All rights reserved.</p>
+            <p>&copy; <%= new Date().getFullYear() %> NAXZORA. All rights reserved. | Precision Engineering for Modern Living.</p>
         </div>
     </div>
 </footer>
@@ -46,6 +51,21 @@
 <script>
     // Initialize Lucide icons
     lucide.createIcons();
+
+    // Scroll to top button
+    const scrollTopBtn = document.getElementById('scrollTopBtn');
+    if (scrollTopBtn) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 400) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
 </script>
 <script src="/js/main.js"></script>
 </body>
