@@ -29,7 +29,7 @@
                 <% products.forEach(product => { %>
                     <a href="/products/<%= product.slug %>" class="card">
                         <div class="card-img">
-                            <img src="<%= product.image_url %>" alt="<%= product.name %>" onerror="this.src='https://placehold.co/600x600/eaf7f8/005b69?text=NAXZORA'">
+                            <img src="<%= product.image_url %>" alt="<%= product.name %> - NAXZORA Premium <%= product.category_name %>" loading="lazy" onerror="this.src='https://placehold.co/600x600/eaf7f8/005b69?text=NAXZORA'">
                         </div>
                         <div class="card-content">
                             <span style="font-size: 0.75rem; color: var(--highlight); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;"><%= product.category_name %></span>

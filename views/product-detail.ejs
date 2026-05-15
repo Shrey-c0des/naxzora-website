@@ -21,12 +21,12 @@
             <!-- Gallery -->
             <div class="animate-on-scroll">
                 <div style="border-radius: var(--radius-lg); overflow: hidden; background: #fff; border: 1px solid rgba(0,91,105,0.08); margin-bottom: 1rem; box-shadow: 0 10px 30px rgba(0,91,105,0.06);">
-                    <img id="main-product-image" src="<%= product.image_url %>" alt="<%= product.name %>" onerror="this.src='https://placehold.co/800x800/eaf7f8/005b69?text=NAXZORA'" style="width: 100%; object-fit: cover;">
+                    <img id="main-product-image" src="<%= product.image_url %>" alt="<%= product.name %> - NAXZORA <%= product.material || '' %> <%= product.category_name %> in <%= product.finish || '' %> finish" onerror="this.src='https://placehold.co/800x800/eaf7f8/005b69?text=NAXZORA'" style="width: 100%; object-fit: cover;">
                 </div>
                 <!-- Thumbnails -->
                 <div style="display: flex; gap: 0.8rem; overflow-x: auto;">
                     <% product.gallery.forEach(imgUrl => { %>
-                        <img src="<%= imgUrl %>" class="thumbnail" onclick="document.getElementById('main-product-image').src = this.src" onerror="this.src='https://placehold.co/200x200/eaf7f8/005b69?text=Thumb'" style="width: 80px; height: 80px; object-fit: cover; border-radius: var(--radius-sm); cursor: pointer; border: 2px solid var(--border); transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.05);" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+                        <img src="<%= imgUrl %>" class="thumbnail" onclick="document.getElementById('main-product-image').src = this.src" alt="<%= product.name %> - gallery view" loading="lazy" onerror="this.src='https://placehold.co/200x200/eaf7f8/005b69?text=Thumb'" style="width: 80px; height: 80px; object-fit: cover; border-radius: var(--radius-sm); cursor: pointer; border: 2px solid var(--border); transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.05);" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
                     <% }) %>
                 </div>
             </div>
@@ -84,7 +84,7 @@
             <% relatedProducts.forEach(product => { %>
                 <a href="/products/<%= product.slug %>" class="card">
                     <div class="card-img">
-                        <img src="<%= product.image_url %>" alt="<%= product.name %>" onerror="this.src='https://placehold.co/600x600/eaf7f8/005b69?text=NAXZORA'">
+                        <img src="<%= product.image_url %>" alt="<%= product.name %> - NAXZORA Premium <%= product.category_name %>" loading="lazy" onerror="this.src='https://placehold.co/600x600/eaf7f8/005b69?text=NAXZORA'">
                     </div>
                     <div class="card-content">
                         <span style="font-size: 0.75rem; color: var(--highlight); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;"><%= product.category_name %></span>

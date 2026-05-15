@@ -5,31 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= typeof title !== 'undefined' ? title : 'NAXZORA | Premium Bathroom Fittings & Sanitary Hardware' %></title>
     
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="NAXZORA offers precision-engineered, luxury bathroom fittings, faucets, and sanitary hardware. Elevate your living space with our durable and elegant collections.">
-    <meta name="keywords" content="NAXZORA, bathroom fittings, faucets, taps, sanitary hardware, luxury bathroom, home fittings, Rajkot hardware, premium faucets">
+    <!-- SEO Meta Tags (Dynamic per page) -->
+    <meta name="description" content="<%= typeof metaDescription !== 'undefined' && metaDescription ? metaDescription : 'NAXZORA offers precision-engineered, luxury bathroom fittings, faucets, and sanitary hardware. Elevate your living space with our durable and elegant collections.' %>">
+    <meta name="keywords" content="<%= typeof keywords !== 'undefined' && keywords ? keywords : 'NAXZORA, bathroom fittings, faucets, taps, sanitary hardware, luxury bathroom, home fittings, Rajkot hardware, premium faucets' %>">
     <meta name="author" content="NAXZORA">
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://naxzora-website.onrender.com/">
-    <meta property="og:title" content="NAXZORA | Premium Bathroom Fittings">
-    <meta property="og:description" content="Precision Engineering for Modern Living. Explore our luxury collection of bathroom and sanitary hardware.">
-    <meta property="og:image" content="/images/panda.jpeg">
+    <!-- Geo Tags for Local SEO -->
+    <meta name="geo.region" content="IN-GJ">
+    <meta name="geo.placename" content="Rajkot, Gujarat, India">
+    <meta name="geo.position" content="22.27;70.75">
+    <meta name="ICBM" content="22.27, 70.75">
+
+    <!-- Open Graph / Facebook (Dynamic per page) -->
+    <meta property="og:type" content="<%= typeof ogType !== 'undefined' && ogType ? ogType : 'website' %>">
+    <meta property="og:url" content="<%= typeof canonicalUrl !== 'undefined' && canonicalUrl ? canonicalUrl : 'https://naxzora-website.onrender.com/' %>">
+    <meta property="og:title" content="<%= typeof ogTitle !== 'undefined' && ogTitle ? ogTitle : 'NAXZORA | Premium Bathroom Fittings' %>">
+    <meta property="og:description" content="<%= typeof ogDescription !== 'undefined' && ogDescription ? ogDescription : 'Precision Engineering for Modern Living. Explore our luxury collection of bathroom and sanitary hardware.' %>">
+    <meta property="og:image" content="<%= typeof ogImage !== 'undefined' && ogImage ? ogImage : 'https://naxzora-website.onrender.com/images/logo.png' %>">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="NAXZORA">
+    <meta property="og:locale" content="en_IN">
 
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:title" content="NAXZORA | Premium Bathroom Fittings">
-    <meta property="twitter:description" content="Precision Engineering for Modern Living. Explore our luxury collection.">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<%= typeof ogTitle !== 'undefined' && ogTitle ? ogTitle : 'NAXZORA | Premium Bathroom Fittings' %>">
+    <meta name="twitter:description" content="<%= typeof ogDescription !== 'undefined' && ogDescription ? ogDescription : 'Precision Engineering for Modern Living. Explore our luxury collection.' %>">
+    <meta name="twitter:image" content="<%= typeof ogImage !== 'undefined' && ogImage ? ogImage : 'https://naxzora-website.onrender.com/images/logo.png' %>">
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="/images/panda_face.png">
+    <link rel="apple-touch-icon" href="/images/panda_face.png">
     
-    <!-- Canonical Link -->
-    <link rel="canonical" href="https://naxzora-website.onrender.com/">
+    <!-- Canonical Link (Dynamic per page) -->
+    <link rel="canonical" href="<%= typeof canonicalUrl !== 'undefined' && canonicalUrl ? canonicalUrl : 'https://naxzora-website.onrender.com/' %>">
 
-    <!-- Google Fonts -->
+    <!-- Theme Color for Mobile Browsers -->
+    <meta name="theme-color" content="#005b69">
+    <meta name="msapplication-navbutton-color" content="#005b69">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#005b69">
+
+    <!-- Google Fonts (Preconnect for performance) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
@@ -37,6 +54,17 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/styles.css">
+
+    <!-- JSON-LD Structured Data (Dynamic per page) -->
+    <% if (typeof jsonLd !== 'undefined' && jsonLd) { %>
+        <% if (Array.isArray(jsonLd)) { %>
+            <% jsonLd.forEach(function(schema) { %>
+                <script type="application/ld+json"><%- JSON.stringify(schema) %></script>
+            <% }); %>
+        <% } else { %>
+            <script type="application/ld+json"><%- JSON.stringify(jsonLd) %></script>
+        <% } %>
+    <% } %>
 </head>
 <body>
 
@@ -45,10 +73,10 @@
     <div class="container nav-container" style="position: relative;">
         <!-- Logo on LEFT side -->
         <a href="/" class="logo">
-            <img src="/images/logo_left.png" alt="NAXZORA Logo">
+            <img src="/images/logo_left.png" alt="NAXZORA - Premium Bathroom Fittings Logo">
         </a>
 
-        <button class="mobile-menu-btn" id="mobile-menu-btn">
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle navigation menu">
             <i data-lucide="menu"></i>
         </button>
 
@@ -61,7 +89,7 @@
         </ul>
 
         <!-- Waves on RIGHT side -->
-        <img src="/images/logo_waves.png" alt="NAXZORA Waves" class="nav-waves">
+        <img src="/images/logo_waves.png" alt="NAXZORA decorative wave pattern" class="nav-waves">
     </div>
 </nav>
 
