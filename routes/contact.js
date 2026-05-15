@@ -3,7 +3,7 @@ const router = express.Router();
 
 const db = require('../db/connection');
 
-const BASE_URL = 'https://naxzora-website.onrender.com';
+const BASE_URL = 'https://naxzora.com';
 
 function getContactSeoData(success = false) {
     const jsonLd = [

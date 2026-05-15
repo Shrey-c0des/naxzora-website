@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const BASE_URL = 'https://naxzora-website.onrender.com';
+const BASE_URL = 'https://naxzora.com';
 
 // About page
 router.get('/', (req, res) => {

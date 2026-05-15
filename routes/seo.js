@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db/connection');
 
-const BASE_URL = 'https://naxzora-website.onrender.com';
+const BASE_URL = 'https://naxzora.com';
 
 // Escape special XML characters
 function escXml(str) {
