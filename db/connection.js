@@ -46,6 +46,22 @@ async function runAutoMigration() {
     if (!pool || useJSON) return;
 
     try {
+        // Ensure images table exists
+        const [imageTables] = await pool.query("SHOW TABLES LIKE 'images'");
+        if (imageTables.length === 0) {
+            console.log('⚠️  Images table not found. Creating it...');
+            await pool.query(`
+                CREATE TABLE IF NOT EXISTS images (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    filename VARCHAR(255) NOT NULL,
+                    mime_type VARCHAR(100) NOT NULL,
+                    data LONGBLOB NOT NULL,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                )
+            `);
+            console.log('✅ Images table created successfully.');
+        }
+
         // Check if the 'categories' table exists
         const [tables] = await pool.query(
             "SHOW TABLES LIKE 'categories'"
@@ -146,6 +162,51 @@ const db = {
             console.log('   Error:', err.message);
             useJSON = true;
             return true;
+        }
+    },
+
+    // Save image to DB or fallback to filesystem
+    async saveImage(filename, mimeType, buffer) {
+        if (useJSON) {
+            // Write to local public/images/uploads folder
+            const uploadDir = path.join(__dirname, '..', 'public', 'images', 'uploads');
+            if (!fs.existsSync(uploadDir)) {
+                fs.mkdirSync(uploadDir, { recursive: true });
+            }
+            const safeFilename = Date.now() + '-' + Math.round(Math.random() * 1E9) + path.extname(filename);
+            fs.writeFileSync(path.join(uploadDir, safeFilename), buffer);
+            return `/images/uploads/${safeFilename}`;
+        }
+
+        try {
+            const [result] = await pool.query(
+                'INSERT INTO images (filename, mime_type, data) VALUES (?, ?, ?)',
+                [filename, mimeType, buffer]
+            );
+            return `/uploads/${result.insertId}`;
+        } catch (err) {
+            console.error('Error saving image to database:', err.message);
+            // Fallback to disk if DB insert fails
+            const uploadDir = path.join(__dirname, '..', 'public', 'images', 'uploads');
+            if (!fs.existsSync(uploadDir)) {
+                fs.mkdirSync(uploadDir, { recursive: true });
+            }
+            const safeFilename = Date.now() + '-' + Math.round(Math.random() * 1E9) + path.extname(filename);
+            fs.writeFileSync(path.join(uploadDir, safeFilename), buffer);
+            return `/images/uploads/${safeFilename}`;
+        }
+    },
+
+    // Get image from DB
+    async getImage(id) {
+        if (useJSON) return null;
+        try {
+            const [rows] = await pool.query('SELECT filename, mime_type, data FROM images WHERE id = ?', [id]);
+            if (rows.length === 0) return null;
+            return rows[0];
+        } catch (err) {
+            console.error('Error fetching image from database:', err.message);
+            return null;
         }
     },
 

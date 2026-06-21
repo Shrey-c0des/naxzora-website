@@ -11,15 +11,8 @@ if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
 }
 
-// Set up Multer for image uploads
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, uploadDir);
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + '-' + Math.round(Math.random() * 1E9) + path.extname(file.originalname));
-    }
-});
+// Set up Multer for in-memory image uploads
+const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 // Helper to create slugs
@@ -95,7 +88,11 @@ router.post('/category/new', isAuthenticated, upload.single('image'), async (req
     try {
         const { name, description } = req.body;
         const slug = slugify(name);
-        const imageUrl = req.file ? `/images/uploads/${req.file.filename}` : '';
+        
+        let imageUrl = '';
+        if (req.file) {
+            imageUrl = await db.saveImage(req.file.originalname, req.file.mimetype, req.file.buffer);
+        }
         
         await db.addCategory(name, slug, description, imageUrl);
         res.redirect('/admin');
@@ -124,7 +121,13 @@ router.post('/product/new', isAuthenticated, upload.array('images', 5), async (r
         const features = req.body.features ? req.body.features.split('\n').map(f => f.trim()).filter(f => f) : [];
         const slug = slugify(name);
         
-        const imageUrls = req.files ? req.files.map(f => `/images/uploads/${f.filename}`) : [];
+        const imageUrls = [];
+        if (req.files && req.files.length > 0) {
+            for (const file of req.files) {
+                const url = await db.saveImage(file.originalname, file.mimetype, file.buffer);
+                imageUrls.push(url);
+            }
+        }
         const mainImage = imageUrls.length > 0 ? imageUrls[0] : '';
         const gallery = imageUrls.length > 1 ? imageUrls.slice(1) : [];
         
