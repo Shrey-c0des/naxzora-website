@@ -7,17 +7,18 @@ async function migrate() {
     console.log('🚀 Starting NAXZORA Database Migration...');
 
     const connectionConfig = {
-        host: process.env.DB_HOST,
-        port: process.env.DB_PORT || 3306,
-        user: process.env.DB_USER,
-        password: process.env.DB_PASSWORD,
-        database: process.env.DB_NAME,
+        host: process.env.DB_HOST || process.env.MYSQLHOST,
+        port: process.env.DB_PORT || process.env.MYSQLPORT || 3306,
+        user: process.env.DB_USER || process.env.MYSQLUSER,
+        password: process.env.DB_PASSWORD || process.env.MYSQLPASSWORD || '',
+        database: process.env.DB_NAME || process.env.MYSQLDATABASE,
         multipleStatements: true // Essential for running schema.sql
     };
 
     if (!connectionConfig.host || !connectionConfig.user || !connectionConfig.database) {
         console.error('❌ Error: Missing DB credentials in .env file.');
         console.log('Please ensure DB_HOST, DB_USER, DB_PASSWORD, and DB_NAME are set.');
+        console.log('Railway users: MYSQLHOST, MYSQLUSER, MYSQLPASSWORD, MYSQLDATABASE are also supported.');
         process.exit(1);
     }
 

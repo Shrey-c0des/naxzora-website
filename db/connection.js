@@ -6,18 +6,20 @@ let useJSON = false;
 let jsonData = null;
 
 // Try to set up MySQL connection
+// Supports both custom DB_* vars and Railway's auto-injected MYSQL* vars
 try {
     const mysql = require('mysql2/promise');
     require('dotenv').config();
 
     pool = mysql.createPool({
-        host: process.env.DB_HOST || 'localhost',
-        port: process.env.DB_PORT || 3306,
-        user: process.env.DB_USER || 'root',
-        password: process.env.DB_PASSWORD || '',
-        database: process.env.DB_NAME || 'naxzora',
+        host: process.env.DB_HOST || process.env.MYSQLHOST || 'localhost',
+        port: process.env.DB_PORT || process.env.MYSQLPORT || 3306,
+        user: process.env.DB_USER || process.env.MYSQLUSER || 'root',
+        password: process.env.DB_PASSWORD || process.env.MYSQLPASSWORD || '',
+        database: process.env.DB_NAME || process.env.MYSQLDATABASE || 'naxzora',
         waitForConnections: true,
         connectionLimit: 10,
+        multipleStatements: true, // Needed for auto-migration
     });
 } catch (err) {
     console.log('MySQL not available, using JSON fallback');
@@ -39,6 +41,92 @@ function saveJSONData() {
     }
 }
 
+// Auto-migration: check if tables exist, if not run schema + seed
+async function runAutoMigration() {
+    if (!pool || useJSON) return;
+
+    try {
+        // Check if the 'categories' table exists
+        const [tables] = await pool.query(
+            "SHOW TABLES LIKE 'categories'"
+        );
+
+        if (tables.length > 0) {
+            // Tables exist, check if they have data
+            const [rows] = await pool.query('SELECT COUNT(*) as count FROM categories');
+            if (rows[0].count > 0) {
+                console.log('✅ Database tables already populated.');
+                return;
+            }
+            console.log('⚠️  Tables exist but are empty. Seeding data...');
+        } else {
+            console.log('⚠️  Database tables not found. Running auto-migration...');
+        }
+
+        // Read schema.sql
+        let schemaSql = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf-8');
+
+        // Remove "CREATE DATABASE" and "USE" lines (Railway manages the database)
+        schemaSql = schemaSql.replace(/CREATE DATABASE IF NOT EXISTS.*;/gi, '');
+        schemaSql = schemaSql.replace(/USE.*;/gi, '');
+
+        // Execute schema (creates tables + seeds initial data)
+        await pool.query(schemaSql);
+        console.log('✅ Schema applied successfully via auto-migration.');
+
+        // Also sync data.json if it has more/different data
+        const dataPath = path.join(__dirname, 'data.json');
+        if (fs.existsSync(dataPath)) {
+            const data = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
+
+            // Check if JSON has data not in the DB
+            const [dbCategories] = await pool.query('SELECT COUNT(*) as count FROM categories');
+            const jsonCategories = data.categories ? data.categories.length : 0;
+
+            if (jsonCategories > dbCategories[0].count) {
+                console.log('⌛ Syncing additional data from data.json...');
+
+                // Clear and re-seed
+                await pool.query('SET FOREIGN_KEY_CHECKS = 0');
+                await pool.query('TRUNCATE TABLE products');
+                await pool.query('TRUNCATE TABLE categories');
+                await pool.query('SET FOREIGN_KEY_CHECKS = 1');
+
+                for (const cat of data.categories) {
+                    await pool.execute(
+                        'INSERT INTO categories (id, name, slug, description, image_url) VALUES (?, ?, ?, ?, ?)',
+                        [cat.id, cat.name, cat.slug, cat.description, cat.image_url]
+                    );
+                }
+
+                for (const prod of data.products) {
+                    await pool.execute(
+                        'INSERT INTO products (id, category_id, name, slug, description, image_url, gallery, features, is_featured) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                        [
+                            prod.id,
+                            prod.category_id,
+                            prod.name,
+                            prod.slug,
+                            prod.description,
+                            prod.image_url,
+                            JSON.stringify(prod.gallery),
+                            JSON.stringify(prod.features),
+                            prod.is_featured ? 1 : 0
+                        ]
+                    );
+                }
+                console.log('✅ data.json synced to remote DB.');
+            }
+        }
+
+        console.log('✨ Auto-migration complete!');
+    } catch (err) {
+        console.error('❌ Auto-migration failed:', err.message);
+        console.log('⚠️  Falling back to JSON data.');
+        useJSON = true;
+    }
+}
+
 // Database query functions with JSON fallback
 const db = {
     // Test connection
@@ -50,9 +138,12 @@ const db = {
         try {
             await pool.query('SELECT 1');
             console.log('✅ MySQL connected successfully');
+            // Run auto-migration after successful connection
+            await runAutoMigration();
             return true;
         } catch (err) {
             console.log('⚠️  MySQL connection failed, switching to JSON fallback');
+            console.log('   Error:', err.message);
             useJSON = true;
             return true;
         }
