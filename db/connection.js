@@ -41,7 +41,23 @@ try {
 // Load JSON data
 function getJSONData() {
     if (!jsonData) {
-        jsonData = require(path.join(__dirname, 'data.json'));
+        const filePath = path.join(__dirname, 'data.json');
+        try {
+            if (fs.existsSync(filePath)) {
+                jsonData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+            } else {
+                throw new Error('File not found');
+            }
+        } catch (e) {
+            console.log('⚠️  Could not read data.json, creating a new empty skeleton');
+            jsonData = {
+                categories: [],
+                products: [],
+                inquiries: [],
+                brochure_requests: []
+            };
+            fs.writeFileSync(filePath, JSON.stringify(jsonData, null, 2), 'utf-8');
+        }
     }
     return jsonData;
 }
@@ -49,7 +65,11 @@ function getJSONData() {
 // Save JSON data
 function saveJSONData() {
     if (useJSON && jsonData) {
-        fs.writeFileSync(path.join(__dirname, 'data.json'), JSON.stringify(jsonData, null, 2), 'utf-8');
+        try {
+            fs.writeFileSync(path.join(__dirname, 'data.json'), JSON.stringify(jsonData, null, 2), 'utf-8');
+        } catch (e) {
+            console.error('Error saving data.json:', e.message);
+        }
     }
 }
 

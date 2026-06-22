@@ -391,6 +391,9 @@ img {
     display: flex;
     align-items: center;
     justify-content: center;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .slide.active {
@@ -398,26 +401,73 @@ img {
     z-index: 1;
 }
 
-.slide-content {
-    text-align: center;
+.slide-content-wrapper {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-4);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
     position: relative;
     z-index: 2;
 }
 
+.slide-text {
+    max-width: 650px;
+    text-align: left;
+}
+
+.slide-subtitle {
+    display: inline-block;
+    color: var(--highlight);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    margin-bottom: var(--space-2);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease 0.1s, transform 0.8s ease 0.1s;
+}
+
 .slide-heading {
     font-family: var(--font-heading);
-    font-size: 3.5rem;
+    font-size: 3.6rem;
     color: #ffffff;
-    line-height: 1.2;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: 1px;
+    text-transform: none;
+    font-weight: 600;
+    margin-bottom: var(--space-2);
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(20px);
     transition: opacity 0.8s ease 0.3s, transform 0.8s ease 0.3s;
 }
 
-.slide.active .slide-heading {
+.slide-desc {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 1.15rem;
+    margin-bottom: var(--space-4);
+    line-height: 1.6;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease 0.5s, transform 0.8s ease 0.5s;
+}
+
+.slide-actions {
+    display: flex;
+    gap: var(--space-2);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease 0.7s, transform 0.8s ease 0.7s;
+}
+
+/* Slide active animations */
+.slide.active .slide-subtitle,
+.slide.active .slide-heading,
+.slide.active .slide-desc,
+.slide.active .slide-actions {
     opacity: 1;
     transform: translateY(0);
 }
@@ -806,6 +856,31 @@ section + .parallax-section {
 
     .hero {
         min-height: 500px;
+    }
+
+    /* Slider Mobile Adaptations */
+    .slide-heading {
+        font-size: 2.2rem !important;
+        line-height: 1.2 !important;
+    }
+    .slide-desc {
+        font-size: 1rem !important;
+        margin-bottom: var(--space-3) !important;
+    }
+    .slide-subtitle {
+        font-size: 0.8rem !important;
+        letter-spacing: 1.5px !important;
+    }
+    .slide-text {
+        text-align: center !important;
+        max-width: 100% !important;
+    }
+    .slide-content-wrapper {
+        justify-content: center !important;
+    }
+    .slide-actions {
+        justify-content: center !important;
+        gap: 0.5rem !important;
     }
 
     .grid-2 {
