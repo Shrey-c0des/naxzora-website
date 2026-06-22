@@ -4,6 +4,15 @@ const path = require('path');
 const db = require('./db/connection');
 require('dotenv').config();
 
+// Prevent crashes from unhandled promise rejections and exceptions
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+process.on('uncaughtException', (err) => {
+    console.error('Uncaught Exception:', err);
+    // Don't exit — let Render restart if truly needed
+});
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -46,8 +55,10 @@ app.use((req, res) => {
 
 // Error handler
 app.use((err, req, res, next) => {
+    console.error('Express error:', err.message);
     console.error(err.stack);
-    res.status(500).send('Something went wrong!');
+    if (res.headersSent) return next(err);
+    res.status(500).send('Something went wrong! Please try again.');
 });
 
 // Start server

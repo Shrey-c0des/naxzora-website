@@ -13,12 +13,13 @@ try {
 
     pool = mysql.createPool({
         host: process.env.DB_HOST || process.env.MYSQLHOST || 'localhost',
-        port: process.env.DB_PORT || process.env.MYSQLPORT || 3306,
+        port: parseInt(process.env.DB_PORT || process.env.MYSQLPORT || '3306'),
         user: process.env.DB_USER || process.env.MYSQLUSER || 'root',
         password: process.env.DB_PASSWORD || process.env.MYSQLPASSWORD || '',
         database: process.env.DB_NAME || process.env.MYSQLDATABASE || 'naxzora',
         waitForConnections: true,
-        connectionLimit: 10,
+        connectionLimit: 5,
+        connectTimeout: 20000,
         multipleStatements: true, // Needed for auto-migration
     });
 } catch (err) {
@@ -46,93 +47,85 @@ async function runAutoMigration() {
     if (!pool || useJSON) return;
 
     try {
-        // Ensure images table exists
-        const [imageTables] = await pool.query("SHOW TABLES LIKE 'images'");
-        if (imageTables.length === 0) {
-            console.log('⚠️  Images table not found. Creating it...');
+        // Create tables individually (safe to run multiple times)
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS categories (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(100) NOT NULL,
+                slug VARCHAR(100) UNIQUE NOT NULL,
+                description TEXT,
+                image_url VARCHAR(255),
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS products (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(200) NOT NULL,
+                slug VARCHAR(200) UNIQUE NOT NULL,
+                category_id INT,
+                description TEXT,
+                features TEXT,
+                material VARCHAR(100),
+                finish VARCHAR(100),
+                image_url VARCHAR(255),
+                gallery TEXT,
+                is_featured BOOLEAN DEFAULT FALSE,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL
+            )
+        `);
+
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS images (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                filename VARCHAR(255) NOT NULL,
+                mime_type VARCHAR(100) NOT NULL,
+                data LONGBLOB NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS inquiries (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(100) NOT NULL,
+                email VARCHAR(100) NOT NULL,
+                phone VARCHAR(20),
+                subject VARCHAR(200),
+                message TEXT NOT NULL,
+                status VARCHAR(20) DEFAULT 'New',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS brochure_requests (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(100) NOT NULL,
+                email VARCHAR(100) NOT NULL,
+                mobile VARCHAR(20),
+                city VARCHAR(100),
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+
+        // Check if categories need seeding
+        const [rows] = await pool.query('SELECT COUNT(*) as count FROM categories');
+        if (rows[0].count === 0) {
+            console.log('⚠️  No categories found. Seeding default data...');
+            // Use INSERT IGNORE so re-runs never crash on duplicates
             await pool.query(`
-                CREATE TABLE IF NOT EXISTS images (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    filename VARCHAR(255) NOT NULL,
-                    mime_type VARCHAR(100) NOT NULL,
-                    data LONGBLOB NOT NULL,
-                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-                )
+                INSERT IGNORE INTO categories (name, slug, description, image_url) VALUES
+                ('Faucets & Taps', 'faucets-taps', 'Premium faucets and taps engineered for durability and elegance.', '/images/categories/faucets.jpg'),
+                ('Showers & Bath Fittings', 'showers-bath', 'Luxury shower systems and bath fittings for the ultimate bathing experience.', '/images/categories/showers.jpg'),
+                ('Pipes & Connectors', 'pipes-connectors', 'Industrial-grade pipes and connectors built to last.', '/images/categories/pipes.jpg'),
+                ('Valves & Cocks', 'valves-cocks', 'Precision-engineered valves and cocks for reliable water flow control.', '/images/categories/valves.jpg'),
+                ('Bathroom Accessories', 'bathroom-accessories', 'Complete your bathroom with our range of accessories.', '/images/categories/accessories.jpg'),
+                ('Sanitary Ware', 'sanitary-ware', 'Designer wash basins, water closets, and sanitary fixtures.', '/images/categories/sanitary.jpg')
             `);
-            console.log('✅ Images table created successfully.');
-        }
-
-        // Check if the 'categories' table exists
-        const [tables] = await pool.query(
-            "SHOW TABLES LIKE 'categories'"
-        );
-
-        if (tables.length > 0) {
-            // Tables exist, check if they have data
-            const [rows] = await pool.query('SELECT COUNT(*) as count FROM categories');
-            if (rows[0].count > 0) {
-                console.log('✅ Database tables already populated.');
-                return;
-            }
-            console.log('⚠️  Tables exist but are empty. Seeding data...');
-        } else {
-            console.log('⚠️  Database tables not found. Running auto-migration...');
-        }
-
-        // Read schema.sql
-        let schemaSql = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf-8');
-
-        // Remove "CREATE DATABASE" and "USE" lines (Railway manages the database)
-        schemaSql = schemaSql.replace(/CREATE DATABASE IF NOT EXISTS.*;/gi, '');
-        schemaSql = schemaSql.replace(/USE.*;/gi, '');
-
-        // Execute schema (creates tables + seeds initial data)
-        await pool.query(schemaSql);
-        console.log('✅ Schema applied successfully via auto-migration.');
-
-        // Also sync data.json if it has more/different data
-        const dataPath = path.join(__dirname, 'data.json');
-        if (fs.existsSync(dataPath)) {
-            const data = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
-
-            // Check if JSON has data not in the DB
-            const [dbCategories] = await pool.query('SELECT COUNT(*) as count FROM categories');
-            const jsonCategories = data.categories ? data.categories.length : 0;
-
-            if (jsonCategories > dbCategories[0].count) {
-                console.log('⌛ Syncing additional data from data.json...');
-
-                // Clear and re-seed
-                await pool.query('SET FOREIGN_KEY_CHECKS = 0');
-                await pool.query('TRUNCATE TABLE products');
-                await pool.query('TRUNCATE TABLE categories');
-                await pool.query('SET FOREIGN_KEY_CHECKS = 1');
-
-                for (const cat of data.categories) {
-                    await pool.execute(
-                        'INSERT INTO categories (id, name, slug, description, image_url) VALUES (?, ?, ?, ?, ?)',
-                        [cat.id, cat.name, cat.slug, cat.description, cat.image_url]
-                    );
-                }
-
-                for (const prod of data.products) {
-                    await pool.execute(
-                        'INSERT INTO products (id, category_id, name, slug, description, image_url, gallery, features, is_featured) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                        [
-                            prod.id,
-                            prod.category_id,
-                            prod.name,
-                            prod.slug,
-                            prod.description,
-                            prod.image_url,
-                            JSON.stringify(prod.gallery),
-                            JSON.stringify(prod.features),
-                            prod.is_featured ? 1 : 0
-                        ]
-                    );
-                }
-                console.log('✅ data.json synced to remote DB.');
-            }
+            console.log('✅ Default categories seeded.');
         }
 
         console.log('✨ Auto-migration complete!');
@@ -162,6 +155,17 @@ const db = {
             console.log('   Error:', err.message);
             useJSON = true;
             return true;
+        }
+    },
+
+    // Re-test and recover connection (call this on repeated DB errors)
+    async recoverConnection() {
+        if (useJSON || !pool) return;
+        try {
+            await pool.query('SELECT 1');
+        } catch (err) {
+            console.error('⚠️  DB connection recovery failed:', err.message);
+            useJSON = true;
         }
     },
 
@@ -349,10 +353,19 @@ const db = {
             saveJSONData();
             return id;
         }
+
+        // Ensure slug is unique — append a number suffix if needed
+        let finalSlug = slug;
+        let suffix = 1;
+        while (true) {
+            const [existing] = await pool.query('SELECT id FROM categories WHERE slug = ?', [finalSlug]);
+            if (existing.length === 0) break;
+            finalSlug = `${slug}-${suffix++}`;
+        }
         
         const [result] = await pool.query(
             'INSERT INTO categories (name, slug, description, image_url) VALUES (?, ?, ?, ?)',
-            [name, slug, description, imageUrl]
+            [name, finalSlug, description, imageUrl]
         );
         return result.insertId;
     },
@@ -371,9 +384,18 @@ const db = {
             return id;
         }
 
+        // Ensure slug is unique — append a number suffix if needed
+        let finalSlug = slug;
+        let suffix = 1;
+        while (true) {
+            const [existing] = await pool.query('SELECT id FROM products WHERE slug = ?', [finalSlug]);
+            if (existing.length === 0) break;
+            finalSlug = `${slug}-${suffix++}`;
+        }
+
         const [result] = await pool.query(
             'INSERT INTO products (category_id, name, slug, description, image_url, gallery, features, is_featured) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-            [categoryId, name, slug, description, imageUrl, JSON.stringify(galleryUrls), JSON.stringify(features), isFeatured]
+            [categoryId, name, finalSlug, description, imageUrl, JSON.stringify(galleryUrls), JSON.stringify(features), isFeatured]
         );
         return result.insertId;
     },

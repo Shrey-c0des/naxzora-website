@@ -87,18 +87,21 @@ router.get('/category/new', isAuthenticated, (req, res) => {
 router.post('/category/new', isAuthenticated, upload.single('image'), async (req, res) => {
     try {
         const { name, description } = req.body;
-        const slug = slugify(name);
+        if (!name || !name.trim()) {
+            return res.status(400).send('Category name is required.');
+        }
+        const slug = slugify(name.trim());
         
         let imageUrl = '';
         if (req.file) {
             imageUrl = await db.saveImage(req.file.originalname, req.file.mimetype, req.file.buffer);
         }
         
-        await db.addCategory(name, slug, description, imageUrl);
+        await db.addCategory(name.trim(), slug, description || '', imageUrl);
         res.redirect('/admin');
     } catch (err) {
-        console.error(err);
-        res.status(500).send('Server Error');
+        console.error('Add category error:', err);
+        res.status(500).send(`Error adding category: ${err.message}`);
     }
 });
 
@@ -117,9 +120,15 @@ router.get('/product/new', isAuthenticated, async (req, res) => {
 router.post('/product/new', isAuthenticated, upload.array('images', 5), async (req, res) => {
     try {
         const { category_id, name, description, price, is_featured } = req.body;
+        if (!name || !name.trim()) {
+            return res.status(400).send('Product name is required.');
+        }
+        if (!category_id) {
+            return res.status(400).send('Please select a category.');
+        }
         // Parse features (assuming newline separated)
         const features = req.body.features ? req.body.features.split('\n').map(f => f.trim()).filter(f => f) : [];
-        const slug = slugify(name);
+        const slug = slugify(name.trim());
         
         const imageUrls = [];
         if (req.files && req.files.length > 0) {
@@ -133,9 +142,9 @@ router.post('/product/new', isAuthenticated, upload.array('images', 5), async (r
         
         await db.addProduct(
             category_id, 
-            name, 
+            name.trim(), 
             slug, 
-            description, 
+            description || '', 
             mainImage, 
             gallery, 
             features, 
@@ -144,8 +153,8 @@ router.post('/product/new', isAuthenticated, upload.array('images', 5), async (r
         
         res.redirect('/admin');
     } catch (err) {
-        console.error(err);
-        res.status(500).send('Server Error');
+        console.error('Add product error:', err);
+        res.status(500).send(`Error adding product: ${err.message}`);
     }
 });
 
