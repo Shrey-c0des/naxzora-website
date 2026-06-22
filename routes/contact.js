@@ -78,7 +78,13 @@ router.get('/', (req, res) => {
 router.post('/', async (req, res) => {
     try {
         const { name, email, phone, message, subject } = req.body;
-        await db.addInquiry(name, email, phone, subject || 'General Inquiry', message);
+        
+        // Basic backend validation
+        if (!name || !name.trim() || !email || !email.trim() || !message || !message.trim()) {
+            return res.status(400).send('Name, Email, and Message are required.');
+        }
+
+        await db.addInquiry(name.trim(), email.trim(), phone || '', subject || 'General Inquiry', message.trim());
         
         res.render('contact', getContactSeoData(true));
     } catch (err) {

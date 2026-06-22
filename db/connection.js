@@ -5,6 +5,17 @@ let pool = null;
 let useJSON = false;
 let jsonData = null;
 
+// Safe JSON parser to prevent crashes
+function safeParseJSON(str, fallback = []) {
+    if (!str || typeof str !== 'string') return fallback;
+    try {
+        return JSON.parse(str);
+    } catch (e) {
+        console.error('Error parsing JSON column:', e.message, str);
+        return fallback;
+    }
+}
+
 // Try to set up MySQL connection
 // Supports both custom DB_* vars and Railway's auto-injected MYSQL* vars
 try {
@@ -263,8 +274,8 @@ const db = {
         const [rows] = await pool.query(query, params);
         return rows.map(r => ({
             ...r,
-            features: typeof r.features === 'string' ? JSON.parse(r.features) : r.features,
-            gallery: typeof r.gallery === 'string' ? JSON.parse(r.gallery) : r.gallery,
+            features: safeParseJSON(r.features),
+            gallery: safeParseJSON(r.gallery),
         }));
     },
 
@@ -288,8 +299,8 @@ const db = {
         `);
         return rows.map(r => ({
             ...r,
-            features: typeof r.features === 'string' ? JSON.parse(r.features) : r.features,
-            gallery: typeof r.gallery === 'string' ? JSON.parse(r.gallery) : r.gallery,
+            features: safeParseJSON(r.features),
+            gallery: safeParseJSON(r.gallery),
         }));
     },
 
@@ -312,8 +323,8 @@ const db = {
         const r = rows[0];
         return {
             ...r,
-            features: typeof r.features === 'string' ? JSON.parse(r.features) : r.features,
-            gallery: typeof r.gallery === 'string' ? JSON.parse(r.gallery) : r.gallery,
+            features: safeParseJSON(r.features),
+            gallery: safeParseJSON(r.gallery),
         };
     },
 
@@ -338,8 +349,8 @@ const db = {
         `, [categoryId, excludeId, limit]);
         return rows.map(r => ({
             ...r,
-            features: typeof r.features === 'string' ? JSON.parse(r.features) : r.features,
-            gallery: typeof r.gallery === 'string' ? JSON.parse(r.gallery) : r.gallery,
+            features: safeParseJSON(r.features),
+            gallery: safeParseJSON(r.gallery),
         }));
     },
 
