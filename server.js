@@ -16,6 +16,9 @@ process.on('uncaughtException', (err) => {
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Trust proxy for secure cookies behind reverse proxies (Render, Railway, etc.)
+app.set('trust proxy', 1);
+
 // View engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -32,7 +35,11 @@ app.use(session({
     secret: process.env.SESSION_SECRET || 'fallback_secret',
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false } // Set to true if using HTTPS in production
+    cookie: {
+        secure: false, // Keep false so it works on both HTTP (dev) and HTTPS (production)
+        sameSite: 'lax',
+        maxAge: 24 * 60 * 60 * 1000 // 1 day
+    }
 }));
 
 // Routes

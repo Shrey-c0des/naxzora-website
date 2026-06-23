@@ -270,6 +270,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 step1.style.display = 'none';
                 step2.style.display = 'block';
                 phoneDisplay.textContent = '+91 ' + mobile;
+                
+                if (data.message) {
+                    step2Success.textContent = data.message;
+                    step2Success.style.display = 'block';
+                } else {
+                    step2Success.style.display = 'none';
+                }
+
                 otpBoxes[0].focus();
                 startResendTimer();
             } else {
@@ -291,11 +299,13 @@ document.addEventListener('DOMContentLoaded', () => {
         step1.style.display = 'block';
         clearOTPBoxes();
         step2Error.style.display = 'none';
+        step2Success.style.display = 'none';
         clearInterval(resendInterval);
     });
 
     resendBtn.addEventListener('click', async () => {
         step2Error.style.display = 'none';
+        step2Success.style.display = 'none';
         const name   = document.getElementById('pb_name').value.trim();
         const mobile = document.getElementById('pb_mobile').value.trim();
         const city   = document.getElementById('pb_city').value.trim();
@@ -309,6 +319,12 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             const data = await res.json();
             if (data.success) {
+                if (data.message) {
+                    step2Success.textContent = data.message;
+                    step2Success.style.display = 'block';
+                } else {
+                    step2Success.style.display = 'none';
+                }
                 clearOTPBoxes();
                 otpBoxes[0].focus();
                 startResendTimer();
