@@ -1,20 +1,20 @@
 :root {
-    /* Color Palette - NAXZORA Teal & White Theme */
-    --bg-dark: #ffffff;
-    --bg-card: #f8fafc;
-    --primary: #005b69;       /* Deep Teal */
-    --primary-hover: #004652;
-    --primary-light: #e0f4f4; /* Soft Cyan Tint */
-    --primary-glow: rgba(0, 91, 105, 0.12);
-    --highlight: #f9a341;     /* Orange/Gold Accent */
-    --highlight-glow: rgba(249, 163, 65, 0.15);
-    --text-primary: #1e293b;  /* Dark Slate */
-    --text-secondary: #64748b;/* Muted Gray */
-    --accent: #70a3ac;        /* Light Teal */
-    --border: #e2e8f0;
-    --border-light: #f1f5f9;
-    --cyan-bg: #eaf7f8;       /* Very light cyan for sections */
-    --cyan-mid: #c8e8ec;
+    /* Color Palette - NAXZORA Black & Gold Luxury Theme */
+    --bg-dark: #0a0a0a;        /* Rich Black */
+    --bg-card: #141414;        /* Dark Card */
+    --primary: #d7b469;        /* Premium Gold */
+    --primary-hover: #e8c97a;  /* Lighter Gold on hover */
+    --primary-light: #1a1710;  /* Dark warm tint */
+    --primary-glow: rgba(215, 180, 105, 0.15);
+    --highlight: #dec083;      /* Medium Gold */
+    --highlight-glow: rgba(222, 192, 131, 0.18);
+    --text-primary: #f0ece4;   /* Warm Off-White */
+    --text-secondary: #9a9080; /* Muted Warm Gray */
+    --accent: #bfa163;         /* Accent Gold/Bronze */
+    --border: #2a2520;         /* Dark warm border */
+    --border-light: #1e1b17;   /* Very dark warm border */
+    --cyan-bg: #0e0e0e;        /* Near-black section bg */
+    --cyan-mid: #1a1710;       /* Dark warm bg */
 
     /* Typography */
     --font-body: 'Inter', sans-serif;
@@ -92,76 +92,57 @@ img {
 }
 
 /* ============================================
-   NAVBAR — Premium Glassmorphism
+   NAVBAR — Premium Black & Gold
    ============================================ */
 .navbar {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    padding: var(--space-3) 0;
-    background: transparent;
+    padding: 0.8rem 0;
+    background: rgba(10, 10, 10, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(215, 180, 105, 0.08);
     transition: background 0.4s ease, padding 0.4s ease, box-shadow 0.4s ease, backdrop-filter 0.4s ease;
     z-index: 1000;
 }
 
 .navbar.scrolled {
-    background: rgba(255, 255, 255, 0.88);
+    background: rgba(10, 10, 10, 0.96);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    padding: 0.6rem 0;
-    border-bottom: 1px solid rgba(0, 91, 105, 0.08);
-    box-shadow: 0 4px 30px rgba(0, 91, 105, 0.06);
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(215, 180, 105, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
 }
 
 .nav-container {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     position: relative;
 }
 
-/* Waves on the far RIGHT — relative to navbar (full screen) */
-.nav-waves {
-    position: fixed;
-    right: 20px;
-    top: 0;
-    height: 90px;
-    opacity: 0.7;
-    pointer-events: none;
-    z-index: 1001;
-    transition: opacity 0.3s ease, height 0.3s ease;
-}
-
-.navbar.scrolled .nav-waves {
-    opacity: 0.4;
-    height: 50px;
-    top: 5px;
-}
-
-/* Logo on the far LEFT — relative to navbar (full screen) */
+/* Logo — normal flow, left side */
 .logo {
-    position: fixed;
-    left: 20px;
-    top: 12px;
+    display: flex;
+    align-items: center;
     z-index: 1001;
-    transition: top 0.3s ease;
-}
-
-.navbar.scrolled .logo {
-    top: 6px;
+    flex-shrink: 0;
 }
 
 .logo img {
-    height: 70px;
+    height: 50px;
     object-fit: contain;
-    transition: height 0.3s ease, filter 0.3s ease;
-    filter: brightness(0) invert(1) drop-shadow(0 0 8px rgba(255,255,255,0.3));
+    transition: height 0.3s ease, filter 0.3s ease, opacity 0.3s ease;
+    /* Make white bg vanish on dark navbar, then tint gold */
+    mix-blend-mode: screen;
+    filter: sepia(1) saturate(2.5) hue-rotate(10deg) brightness(0.85);
 }
 
 .navbar.scrolled .logo img {
-    height: 55px;
-    filter: none;
+    height: 42px;
 }
 
 /* Nav links centered */
@@ -184,7 +165,7 @@ img {
 }
 
 .navbar.scrolled .nav-links a {
-    color: var(--text-primary);
+    color: rgba(240, 236, 228, 0.9);
 }
 
 .nav-links a::after {
@@ -226,7 +207,7 @@ img {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 91, 105, 0.3);
+    background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(8px);
     z-index: 1999;
     opacity: 0;
@@ -267,7 +248,7 @@ img {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    background: linear-gradient(90deg, transparent, rgba(215,180,105,0.2), transparent);
     transition: left 0.5s ease;
 }
 
@@ -294,7 +275,7 @@ img {
 }
 
 /* ============================================
-   HERO SECTION — Dramatic Teal Gradient
+   HERO SECTION — Dramatic Charcoal & Gold Gradient
    ============================================ */
 .hero {
     height: 100vh;
@@ -303,7 +284,7 @@ img {
     align-items: center;
     position: relative;
     overflow: hidden;
-    background: linear-gradient(135deg, #eaf7f8 0%, #d4eef1 25%, #b8e4ea 50%, #e0f4f4 100%);
+    background: linear-gradient(135deg, #0a0a0a 0%, #111 25%, #0e0d0a 50%, #0a0a0a 100%);
 }
 
 .hero-bg {
@@ -312,7 +293,7 @@ img {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(224,244,244,0.5) 50%, rgba(0,91,105,0.08) 100%);
+    background: linear-gradient(135deg, rgba(0,0,0,0.5) 0%, rgba(10,10,10,0.3) 50%, rgba(215,180,105,0.04) 100%);
     z-index: 0;
 }
 
@@ -325,7 +306,7 @@ img {
     width: 600px;
     height: 600px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(0, 91, 105, 0.06) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(215, 180, 105, 0.06) 0%, transparent 70%);
     z-index: 0;
     animation: floatSlow 8s ease-in-out infinite;
 }
@@ -338,7 +319,7 @@ img {
     width: 500px;
     height: 500px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(249, 163, 65, 0.06) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(215, 180, 105, 0.06) 0%, transparent 70%);
     z-index: 0;
     animation: floatSlow 10s ease-in-out infinite reverse;
 }
@@ -499,7 +480,7 @@ img {
     left: 0;
     height: 100%;
     width: 0%;
-    background: #fff;
+    background: var(--primary);
     border-radius: 2px;
     animation: indicatorProgress 5s linear forwards;
 }
@@ -548,7 +529,7 @@ img {
 }
 
 .card {
-    background: var(--bg-dark);
+    background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: var(--radius-md);
     overflow: hidden;
@@ -571,7 +552,7 @@ img {
 
 .card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0, 91, 105, 0.1), 0 0 0 1px rgba(0, 91, 105, 0.05);
+    box-shadow: 0 20px 40px rgba(215, 180, 105, 0.08), 0 0 0 1px rgba(215, 180, 105, 0.04);
     border-color: var(--accent);
 }
 
@@ -582,7 +563,7 @@ img {
 .card-img {
     height: 260px;
     overflow: hidden;
-    background: linear-gradient(135deg, var(--cyan-bg), #fff);
+    background: linear-gradient(135deg, var(--cyan-bg), #111);
     position: relative;
 }
 
@@ -614,12 +595,12 @@ img {
 }
 
 /* ============================================
-   PAGE BANNER — Teal gradient for inner pages
+   PAGE BANNER — Charcoal & Gold gradient for inner pages
    ============================================ */
 .page-banner {
     padding-top: 120px;
     padding-bottom: var(--space-8);
-    background: linear-gradient(135deg, var(--primary) 0%, #007a8a 50%, var(--accent) 100%);
+    background: linear-gradient(135deg, #1a1710 0%, #0e0d0a 50%, #141414 100%);
     position: relative;
     overflow: hidden;
 }
@@ -627,13 +608,13 @@ img {
 /* No gradient fade on banner bottom — clean edge */
 
 .page-banner h1 {
-    color: #ffffff;
+    color: var(--primary);
     font-size: 3rem;
     margin-bottom: var(--space-1);
 }
 
 .page-banner p {
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--text-secondary);
     max-width: 600px;
     margin: 0 auto;
 }
@@ -644,7 +625,7 @@ img {
 .section-divider {
     width: 60px;
     height: 3px;
-    background: linear-gradient(90deg, var(--primary), var(--highlight));
+    background: linear-gradient(90deg, var(--primary), var(--accent));
     margin: 0 auto var(--space-4);
     border-radius: 2px;
 }
@@ -653,14 +634,14 @@ img {
    PARALLAX DARK SECTION
    ============================================ */
 .parallax-section {
-    background-color: #1a1a2e;
+    background-color: #080808;
     background-image: 
         linear-gradient(135deg, rgba(255,255,255,0.03) 25%, transparent 25%),
         linear-gradient(225deg, rgba(255,255,255,0.03) 25%, transparent 25%),
         linear-gradient(45deg, rgba(255,255,255,0.03) 25%, transparent 25%),
         linear-gradient(315deg, rgba(255,255,255,0.03) 25%, transparent 25%),
-        linear-gradient(to bottom, rgba(15,52,67,0.9), rgba(26,26,46,0.95)),
-        repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,0.02) 35px, rgba(255,255,255,0.02) 70px);
+        linear-gradient(to bottom, rgba(20,17,10,0.95), rgba(10,10,10,0.98)),
+        repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(215,180,105,0.03) 35px, rgba(215,180,105,0.03) 70px);
     background-attachment: fixed;
     background-size: 60px 60px, 60px 60px, 60px 60px, 60px 60px, cover, auto;
     position: relative;
@@ -684,8 +665,8 @@ section + .parallax-section {
    STAT CARDS — Premium counters
    ============================================ */
 .stat-card {
-    background: linear-gradient(135deg, var(--primary-light), #fff);
-    border: 1px solid rgba(0, 91, 105, 0.1);
+    background: linear-gradient(135deg, var(--primary-light), var(--bg-card));
+    border: 1px solid rgba(215, 180, 105, 0.15);
     border-radius: var(--radius-lg);
     padding: var(--space-4) var(--space-3);
     text-align: center;
@@ -712,10 +693,10 @@ section + .parallax-section {
 }
 
 /* ============================================
-   FOOTER — Premium Dark Teal
+   FOOTER — Premium Dark Charcoal & Gold
    ============================================ */
 .footer {
-    background: linear-gradient(135deg, var(--primary-hover) 0%, var(--primary) 100%);
+    background: linear-gradient(135deg, #0e0d0a 0%, #141210 100%);
     padding: var(--space-8) 0 var(--space-4);
     color: #ffffff;
     position: relative;
@@ -728,7 +709,7 @@ section + .parallax-section {
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, var(--highlight), var(--primary), var(--accent), var(--highlight));
+    background: linear-gradient(90deg, var(--primary), var(--accent), var(--primary), var(--accent));
 }
 
 .footer h4 {
@@ -775,7 +756,7 @@ section + .parallax-section {
 .footer-bottom {
     text-align: center;
     padding-top: var(--space-4);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid rgba(215, 180, 105, 0.12);
     color: rgba(255, 255, 255, 0.5);
     font-size: 0.8rem;
     letter-spacing: 0.5px;
@@ -790,11 +771,11 @@ section + .parallax-section {
 
 /* Cyan tinted section backgrounds */
 .section-cyan {
-    background: linear-gradient(135deg, var(--cyan-bg) 0%, #fff 100%);
+    background: linear-gradient(135deg, var(--cyan-bg) 0%, var(--bg-dark) 100%);
 }
 
 .section-cyan-dark {
-    background: linear-gradient(135deg, var(--primary) 0%, #007a8a 100%);
+    background: linear-gradient(135deg, #1a1710 0%, #0e0d0a 100%);
     color: #fff;
 }
 
@@ -805,10 +786,10 @@ section + .parallax-section {
 
 /* Glassmorphism utility */
 .glass {
-    background: rgba(255, 255, 255, 0.7);
+    background: rgba(20, 20, 20, 0.7);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(215, 180, 105, 0.1);
 }
 
 /* ============================================
@@ -837,7 +818,7 @@ section + .parallax-section {
         gap: 2rem;
         margin-left: 0;
         z-index: 2000;
-        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
         transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         padding: 2rem;
     }
@@ -919,7 +900,7 @@ section + .parallax-section {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0, 91, 105, 0.4);
+    background-color: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     align-items: center;
@@ -927,14 +908,14 @@ section + .parallax-section {
 }
 
 .modal-content {
-    background-color: var(--bg-dark);
+    background-color: var(--bg-card);
     margin: auto;
     padding: var(--space-4);
-    border: 1px solid rgba(0, 91, 105, 0.1);
+    border: 1px solid rgba(215, 180, 105, 0.15);
     border-radius: var(--radius-lg);
     width: 90%;
     max-width: 500px;
-    box-shadow: 0 25px 50px rgba(0, 91, 105, 0.15);
+    box-shadow: 0 25px 50px rgba(18, 20, 24, 0.15);
     position: relative;
     animation: modalFadeIn 0.3s ease;
 }
@@ -983,7 +964,7 @@ section + .parallax-section {
     outline: none;
     border-color: var(--primary);
     box-shadow: 0 0 0 4px var(--primary-glow);
-    background: #fff;
+    background: var(--bg-dark);
 }
 
 /* ============================================
@@ -1148,7 +1129,7 @@ section + .parallax-section {
 
 .card:hover {
     transform: translateY(-8px) !important;
-    box-shadow: 0 20px 40px rgba(0, 91, 105, 0.1), 0 0 0 1px rgba(0, 91, 105, 0.05);
+    box-shadow: 0 20px 40px rgba(215, 180, 105, 0.08), 0 0 0 1px rgba(215, 180, 105, 0.04);
     border-color: var(--accent);
 }
 
@@ -1194,7 +1175,7 @@ section + .parallax-section {
         position: fixed;
         right: 15px;
         top: 18px;
-        color: #fff;
+        color: var(--primary);
     }
 
     .navbar.scrolled .mobile-menu-btn {
@@ -1207,13 +1188,13 @@ section + .parallax-section {
         right: -100%;
         width: 280px;
         height: 100vh;
-        background: #fff;
+        background: var(--bg-dark);
         flex-direction: column;
         padding: 5rem var(--space-4) var(--space-4);
         gap: 0;
         z-index: 2000;
         transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: -10px 0 40px rgba(0,0,0,0.15);
+        box-shadow: -10px 0 40px rgba(0,0,0,0.6);
     }
 
     .nav-links.active {

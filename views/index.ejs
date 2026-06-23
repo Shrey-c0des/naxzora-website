@@ -3,7 +3,7 @@
 <!-- Hero Slideshow — Full Screen -->
 <section class="hero-slideshow" id="heroSlideshow">
     <!-- Slide 1 -->
-    <div class="slide active" style="background-image: linear-gradient(to right, rgba(0, 50, 60, 0.95) 0%, rgba(0, 91, 105, 0.5) 60%, rgba(0, 0, 0, 0.2) 100%), url('/images/homepage/IMG_8057.jpg');">
+    <div class="slide active" style="background-image: linear-gradient(to right, rgba(0, 0, 0, 0.95) 0%, rgba(10, 10, 10, 0.7) 60%, rgba(0, 0, 0, 0.4) 100%), url('/images/homepage/IMG_8057.jpg');">
         <div class="slide-content-wrapper">
             <div class="slide-text">
                 <span class="slide-subtitle">Sleek & Contemporary</span>
@@ -18,7 +18,7 @@
     </div>
     
     <!-- Slide 2 -->
-    <div class="slide" style="background-image: linear-gradient(to right, rgba(20, 24, 30, 0.95) 0%, rgba(30, 41, 59, 0.5) 60%, rgba(0, 0, 0, 0.2) 100%), url('/images/homepage/IMG_8059.jpg');">
+    <div class="slide" style="background-image: linear-gradient(to right, rgba(10, 10, 10, 0.96) 0%, rgba(35, 30, 20, 0.75) 60%, rgba(0, 0, 0, 0.4) 100%), url('/images/homepage/IMG_8059.jpg');">
         <div class="slide-content-wrapper">
             <div class="slide-text">
                 <span class="slide-subtitle">Minimalist Design</span>
@@ -33,7 +33,7 @@
     </div>
 
     <!-- Slide 3 -->
-    <div class="slide" style="background-image: linear-gradient(to right, rgba(15, 34, 40, 0.95) 0%, rgba(30, 50, 45, 0.5) 60%, rgba(0, 0, 0, 0.2) 100%), url('/images/homepage/IMG_8061.jpg');">
+    <div class="slide" style="background-image: linear-gradient(to right, rgba(0, 0, 0, 0.95) 0%, rgba(10, 10, 10, 0.7) 60%, rgba(0, 0, 0, 0.4) 100%), url('/images/homepage/IMG_8061.jpg');">
         <div class="slide-content-wrapper">
             <div class="slide-text">
                 <span class="slide-subtitle">Versatile & Functional</span>
@@ -48,7 +48,7 @@
     </div>
 
     <!-- Slide 4 -->
-    <div class="slide" style="background-image: linear-gradient(to right, rgba(30, 30, 30, 0.95) 0%, rgba(55, 55, 55, 0.5) 60%, rgba(0, 0, 0, 0.2) 100%), url('/images/homepage/IMG_8063.jpg');">
+    <div class="slide" style="background-image: linear-gradient(to right, rgba(10, 10, 10, 0.96) 0%, rgba(35, 30, 20, 0.75) 60%, rgba(0, 0, 0, 0.4) 100%), url('/images/homepage/IMG_8063.jpg');">
         <div class="slide-content-wrapper">
             <div class="slide-text">
                 <span class="slide-subtitle">Luxury Bathroom Fittings</span>
@@ -63,7 +63,7 @@
     </div>
 
     <!-- Slide 5 -->
-    <div class="slide" style="background-image: linear-gradient(to right, rgba(20, 20, 25, 0.95) 0%, rgba(50, 50, 55, 0.5) 60%, rgba(0, 0, 0, 0.2) 100%), url('/images/homepage/IMG_8067.jpg');">
+    <div class="slide" style="background-image: linear-gradient(to right, rgba(10, 10, 10, 0.96) 0%, rgba(35, 30, 20, 0.75) 60%, rgba(0, 0, 0, 0.4) 100%), url('/images/homepage/IMG_8067.jpg');">
         <div class="slide-content-wrapper">
             <div class="slide-text">
                 <span class="slide-subtitle">Exceptional Quality</span>
@@ -78,7 +78,7 @@
     </div>
 
     <!-- Slide 6 -->
-    <div class="slide" style="background-image: linear-gradient(to right, rgba(0, 50, 60, 0.95) 0%, rgba(0, 91, 105, 0.5) 60%, rgba(0, 0, 0, 0.2) 100%), url('/images/homepage/IMG_8069.jpg');">
+    <div class="slide" style="background-image: linear-gradient(to right, rgba(0, 0, 0, 0.95) 0%, rgba(10, 10, 10, 0.7) 60%, rgba(0, 0, 0, 0.4) 100%), url('/images/homepage/IMG_8069.jpg');">
         <div class="slide-content-wrapper">
             <div class="slide-text">
                 <span class="slide-subtitle">Designer Collection</span>
@@ -120,7 +120,7 @@
             <% featuredProducts.forEach(product => { %>
                 <a href="/products/<%= product.slug %>" class="card">
                     <div class="card-img">
-                        <img src="<%= product.image_url %>" alt="<%= product.name %> - NAXZORA Premium <%= product.category_name %>" loading="lazy" onerror="this.src='https://placehold.co/600x600/eaf7f8/005b69?text=NAXZORA'">
+                        <img src="<%= product.image_url %>" alt="<%= product.name %> - NAXZORA Premium <%= product.category_name %>" loading="lazy" onerror="this.src='https://placehold.co/600x600/141414/d7b469?text=NAXZORA'">
                     </div>
                     <div class="card-content">
                         <span style="font-size: 0.75rem; color: var(--highlight); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;"><%= product.category_name %></span>
@@ -138,7 +138,7 @@
 
 <!-- Product Categories Section (SEO content) -->
 <% if (typeof categories !== 'undefined' && categories.length > 0) { %>
-<section class="section" style="background: #fff;" id="product-categories">
+<section class="section" style="background: #0a0a0a;" id="product-categories">
     <div class="container">
         <div class="text-center" style="margin-bottom: var(--space-6);">
             <span class="pill-badge reveal">Explore by Category</span>
@@ -150,7 +150,7 @@
             <% categories.forEach(cat => { %>
                 <a href="/products?category=<%= cat.slug %>" class="card">
                     <div class="card-img">
-                        <img src="<%= cat.image_url %>" alt="<%= cat.name %> - NAXZORA Bathroom Fittings Category" loading="lazy" onerror="this.src='https://placehold.co/600x600/eaf7f8/005b69?text=<%= encodeURIComponent(cat.name) %>'">
+                        <img src="<%= cat.image_url %>" alt="<%= cat.name %> - NAXZORA Bathroom Fittings Category" loading="lazy" onerror="this.src='https://placehold.co/600x600/141414/d7b469?text=<%= encodeURIComponent(cat.name) %>'">
                     </div>
                     <div class="card-content">
                         <h3 class="card-title"><%= cat.name %></h3>
@@ -172,7 +172,7 @@
         </p>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-4); max-width: 900px; margin: 0 auto;">
             <div class="reveal delay-1" style="text-align: center;">
-                <div style="width: 60px; height: 60px; border-radius: 50%; background: rgba(249,163,65,0.15); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-2);">
+                <div style="width: 60px; height: 60px; border-radius: 50%; background: rgba(215,180,105,0.12); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-2);">
                     <i data-lucide="shield-check" style="color: var(--highlight); width: 28px; height: 28px;"></i>
                 </div>
                 <h3 style="color: #fff; font-size: 1.1rem; margin-bottom: 0.5rem;">Premium Quality</h3>

@@ -24,9 +24,13 @@ function sendOTPviaSMS(mobile, otp) {
             return resolve({ success: true, dev: true });
         }
 
+        const message = `Your NAXZORA brochure download OTP is: ${otp}. Valid for 5 minutes. Do not share this OTP with anyone.`;
+
         const payload = JSON.stringify({
-            route: 'otp',
-            variables_values: otp,
+            route: 'q',           // Quick (non-DLT) route
+            message: message,
+            language: 'english',
+            flash: 0,
             numbers: mobile,
         });
 
