@@ -1,0 +1,386 @@
+<%- include('partials/header') %>
+
+<section style="min-height: 100vh; background: linear-gradient(135deg, #f0f9fb 0%, #e6f4f1 50%, #fef9f0 100%); display: flex; align-items: center; padding: 8rem 1.5rem 4rem;">
+    <div class="container" style="max-width: 900px; margin: 0 auto;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;">
+
+            <!-- Left: Info Panel -->
+            <div class="reveal">
+                <span class="pill-badge" style="margin-bottom: 1.2rem; display: inline-block;">Product Brochure</span>
+                <h1 style="font-size: 2.5rem; color: var(--primary); line-height: 1.2; margin-bottom: 1rem;">
+                    Explore Our Full<br>Product Range
+                </h1>
+                <p style="color: var(--text-secondary); line-height: 1.8; margin-bottom: 2rem; font-size: 1rem;">
+                    Download the latest NAXZORA catalogue featuring our complete collection of premium bathroom fittings, faucets, showers, and sanitary hardware — crafted in Rajkot, Gujarat.
+                </p>
+                <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.75rem;">
+                    <li style="display: flex; align-items: center; gap: 0.75rem; color: var(--text-secondary);">
+                        <span style="width:28px; height:28px; border-radius:50%; background:rgba(0,91,105,0.1); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                            <i data-lucide="check" style="width:14px; height:14px; color:var(--primary);"></i>
+                        </span>
+                        Complete product catalogue with specs
+                    </li>
+                    <li style="display: flex; align-items: center; gap: 0.75rem; color: var(--text-secondary);">
+                        <span style="width:28px; height:28px; border-radius:50%; background:rgba(0,91,105,0.1); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                            <i data-lucide="check" style="width:14px; height:14px; color:var(--primary);"></i>
+                        </span>
+                        High-quality product photography
+                    </li>
+                    <li style="display: flex; align-items: center; gap: 0.75rem; color: var(--text-secondary);">
+                        <span style="width:28px; height:28px; border-radius:50%; background:rgba(0,91,105,0.1); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                            <i data-lucide="check" style="width:14px; height:14px; color:var(--primary);"></i>
+                        </span>
+                        Material, finish & size details
+                    </li>
+                    <li style="display: flex; align-items: center; gap: 0.75rem; color: var(--text-secondary);">
+                        <span style="width:28px; height:28px; border-radius:50%; background:rgba(0,91,105,0.1); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                            <i data-lucide="check" style="width:14px; height:14px; color:var(--primary);"></i>
+                        </span>
+                        Instant PDF download after verification
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Right: OTP Form Card -->
+            <div class="reveal delay-1" style="background:#fff; border-radius:20px; padding:2.5rem; box-shadow: 0 20px 60px rgba(0,91,105,0.12); border:1px solid rgba(0,91,105,0.08);">
+
+                <!-- Step 1: Details -->
+                <div id="brochurePageStep1">
+                    <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1.5rem;">
+                        <div style="width:40px; height:40px; border-radius:50%; background:var(--primary); display:flex; align-items:center; justify-content:center;">
+                            <i data-lucide="file-text" style="width:18px; height:18px; color:#fff;"></i>
+                        </div>
+                        <div>
+                            <h2 style="font-size:1.3rem; color:var(--primary); margin:0;">Download Brochure</h2>
+                            <p style="color:var(--text-secondary); font-size:0.8rem; margin:0;">OTP verification required</p>
+                        </div>
+                    </div>
+
+                    <div id="pageStep1Error" style="display:none; background:#fee2e2; color:#b91c1c; border-radius:10px; padding:0.7rem 1rem; margin-bottom:1rem; font-size:0.875rem;"></div>
+
+                    <div style="margin-bottom:1rem;">
+                        <label for="pb_name" style="display:block; margin-bottom:0.35rem; font-size:0.85rem; font-weight:500; color:var(--text-primary);">Full Name *</label>
+                        <input type="text" id="pb_name" class="form-input" placeholder="Your full name" required>
+                    </div>
+                    <div style="margin-bottom:1rem;">
+                        <label for="pb_mobile" style="display:block; margin-bottom:0.35rem; font-size:0.85rem; font-weight:500; color:var(--text-primary);">Mobile Number *</label>
+                        <div style="display:flex; gap:0.5rem;">
+                            <span style="display:flex; align-items:center; background:#f5f5f5; border:1px solid #e5e7eb; border-radius:10px; padding:0 0.75rem; font-size:0.9rem; color:#666; white-space:nowrap; font-weight:500;">+91</span>
+                            <input type="tel" id="pb_mobile" class="form-input" placeholder="10-digit mobile number" maxlength="10" pattern="[0-9]{10}" style="flex:1;" required>
+                        </div>
+                    </div>
+                    <div style="margin-bottom:1.5rem;">
+                        <label for="pb_city" style="display:block; margin-bottom:0.35rem; font-size:0.85rem; font-weight:500; color:var(--text-primary);">City <span style="color:#999; font-weight:400;">(optional)</span></label>
+                        <input type="text" id="pb_city" class="form-input" placeholder="Your city">
+                    </div>
+
+                    <button type="button" id="pageSendOtp" class="btn" style="width:100%; display:flex; align-items:center; justify-content:center; gap:0.5rem;">
+                        <i data-lucide="send" style="width:16px; height:16px;"></i>
+                        Send OTP
+                    </button>
+                    <p style="text-align:center; color:#999; font-size:0.78rem; margin-top:1rem;">
+                        <i data-lucide="lock" style="width:12px; height:12px; vertical-align:-2px;"></i>
+                        Your information is secure and never shared.
+                    </p>
+                </div>
+
+                <!-- Step 2: OTP Input -->
+                <div id="brochurePageStep2" style="display:none;">
+                    <div style="text-align:center; margin-bottom:1.5rem;">
+                        <div style="width:60px; height:60px; border-radius:50%; background:rgba(0,91,105,0.1); display:flex; align-items:center; justify-content:center; margin:0 auto 1rem;">
+                            <i data-lucide="smartphone" style="width:26px; height:26px; color:var(--primary);"></i>
+                        </div>
+                        <h2 style="font-size:1.3rem; color:var(--primary); margin-bottom:0.4rem;">Enter OTP</h2>
+                        <p style="color:var(--text-secondary); font-size:0.875rem;">OTP sent to <strong id="pagePhoneDisplay" style="color:var(--primary);"></strong></p>
+                    </div>
+
+                    <div id="pageStep2Error" style="display:none; background:#fee2e2; color:#b91c1c; border-radius:10px; padding:0.7rem 1rem; margin-bottom:1rem; font-size:0.875rem;"></div>
+                    <div id="pageStep2Success" style="display:none; background:#d1fae5; color:#065f46; border-radius:10px; padding:0.7rem 1rem; margin-bottom:1rem; font-size:0.875rem;"></div>
+
+                    <!-- OTP Input Boxes -->
+                    <div id="otpBoxes" style="display:flex; gap:0.6rem; justify-content:center; margin-bottom:1.5rem;">
+                        <input type="text" class="otp-box" maxlength="1" inputmode="numeric" pattern="[0-9]"
+                            style="width:48px; height:56px; text-align:center; font-size:1.5rem; font-weight:700; border:2px solid #e5e7eb; border-radius:10px; outline:none; transition:border-color 0.2s; color:var(--primary);">
+                        <input type="text" class="otp-box" maxlength="1" inputmode="numeric" pattern="[0-9]"
+                            style="width:48px; height:56px; text-align:center; font-size:1.5rem; font-weight:700; border:2px solid #e5e7eb; border-radius:10px; outline:none; transition:border-color 0.2s; color:var(--primary);">
+                        <input type="text" class="otp-box" maxlength="1" inputmode="numeric" pattern="[0-9]"
+                            style="width:48px; height:56px; text-align:center; font-size:1.5rem; font-weight:700; border:2px solid #e5e7eb; border-radius:10px; outline:none; transition:border-color 0.2s; color:var(--primary);">
+                        <input type="text" class="otp-box" maxlength="1" inputmode="numeric" pattern="[0-9]"
+                            style="width:48px; height:56px; text-align:center; font-size:1.5rem; font-weight:700; border:2px solid #e5e7eb; border-radius:10px; outline:none; transition:border-color 0.2s; color:var(--primary);">
+                        <input type="text" class="otp-box" maxlength="1" inputmode="numeric" pattern="[0-9]"
+                            style="width:48px; height:56px; text-align:center; font-size:1.5rem; font-weight:700; border:2px solid #e5e7eb; border-radius:10px; outline:none; transition:border-color 0.2s; color:var(--primary);">
+                        <input type="text" class="otp-box" maxlength="1" inputmode="numeric" pattern="[0-9]"
+                            style="width:48px; height:56px; text-align:center; font-size:1.5rem; font-weight:700; border:2px solid #e5e7eb; border-radius:10px; outline:none; transition:border-color 0.2s; color:var(--primary);">
+                    </div>
+
+                    <button type="button" id="pageVerifyOtp" class="btn" style="width:100%; display:flex; align-items:center; justify-content:center; gap:0.5rem; margin-bottom:0.75rem;">
+                        <i data-lucide="download" style="width:16px; height:16px;"></i>
+                        Verify &amp; Download
+                    </button>
+
+                    <button type="button" id="pageResendOtp" class="btn btn-outline" style="width:100%; font-size:0.85rem;" disabled>
+                        Resend OTP (<span id="pageResendTimer">30</span>s)
+                    </button>
+
+                    <button type="button" id="pageGoBack" style="display:block; margin:0.75rem auto 0; background:none; border:none; cursor:pointer; color:var(--text-secondary); font-size:0.85rem; text-decoration:underline;">
+                        ← Change number
+                    </button>
+                </div>
+
+                <!-- Step 3: Success -->
+                <div id="brochurePageStep3" style="display:none; text-align:center; padding: 1rem 0;">
+                    <div style="width:70px; height:70px; border-radius:50%; background:linear-gradient(135deg, #10b981, #059669); display:flex; align-items:center; justify-content:center; margin:0 auto 1.25rem;">
+                        <i data-lucide="check-circle" style="width:32px; height:32px; color:#fff;"></i>
+                    </div>
+                    <h2 style="font-size:1.4rem; color:var(--primary); margin-bottom:0.5rem;">Verified!</h2>
+                    <p style="color:var(--text-secondary); font-size:0.9rem; margin-bottom:1.5rem;">Your brochure is downloading. If it didn't start, click below.</p>
+                    <a id="directDownloadLink" href="/naxzora-brochure.pdf" target="_blank" class="btn" style="display:inline-flex; align-items:center; gap:0.5rem;">
+                        <i data-lucide="download" style="width:16px; height:16px;"></i>
+                        Download Brochure
+                    </a>
+                    <button type="button" id="pageStartOver" style="display:block; margin:1rem auto 0; background:none; border:none; cursor:pointer; color:var(--text-secondary); font-size:0.85rem; text-decoration:underline;">
+                        Submit another request
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.otp-box:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 3px rgba(0, 91, 105, 0.12);
+}
+.otp-box.filled {
+    border-color: var(--primary) !important;
+    background: rgba(0, 91, 105, 0.04);
+}
+@media (max-width: 768px) {
+    .brochure-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
+    .brochure-info { display: none; }
+    .otp-box { width: 40px !important; height: 50px !important; font-size: 1.2rem !important; }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const step1 = document.getElementById('brochurePageStep1');
+    const step2 = document.getElementById('brochurePageStep2');
+    const step3 = document.getElementById('brochurePageStep3');
+
+    const sendOtpBtn  = document.getElementById('pageSendOtp');
+    const verifyBtn   = document.getElementById('pageVerifyOtp');
+    const resendBtn   = document.getElementById('pageResendOtp');
+    const goBackBtn   = document.getElementById('pageGoBack');
+    const startOverBtn = document.getElementById('pageStartOver');
+
+    const step1Error  = document.getElementById('pageStep1Error');
+    const step2Error  = document.getElementById('pageStep2Error');
+    const step2Success = document.getElementById('pageStep2Success');
+    const phoneDisplay = document.getElementById('pagePhoneDisplay');
+    const resendTimerEl = document.getElementById('pageResendTimer');
+
+    const otpBoxes = Array.from(document.querySelectorAll('.otp-box'));
+    let resendInterval = null;
+
+    // ── OTP Box Focus-Jump Logic ─────────────────────────────
+    otpBoxes.forEach((box, i) => {
+        box.addEventListener('input', () => {
+            box.value = box.value.replace(/[^0-9]/g, '').slice(-1);
+            if (box.value) {
+                box.classList.add('filled');
+                if (i < otpBoxes.length - 1) otpBoxes[i + 1].focus();
+            } else {
+                box.classList.remove('filled');
+            }
+        });
+        box.addEventListener('keydown', (e) => {
+            if (e.key === 'Backspace' && !box.value && i > 0) {
+                otpBoxes[i - 1].focus();
+                otpBoxes[i - 1].value = '';
+                otpBoxes[i - 1].classList.remove('filled');
+            }
+        });
+        box.addEventListener('paste', (e) => {
+            e.preventDefault();
+            const text = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g, '');
+            text.split('').slice(0, 6).forEach((char, j) => {
+                if (otpBoxes[j]) {
+                    otpBoxes[j].value = char;
+                    otpBoxes[j].classList.add('filled');
+                }
+            });
+            if (otpBoxes[Math.min(text.length, 5)]) otpBoxes[Math.min(text.length, 5)].focus();
+        });
+    });
+
+    function getOTPValue() {
+        return otpBoxes.map(b => b.value).join('');
+    }
+
+    function clearOTPBoxes() {
+        otpBoxes.forEach(b => { b.value = ''; b.classList.remove('filled'); });
+    }
+
+    function showError(el, msg) {
+        el.textContent = msg;
+        el.style.display = 'block';
+        setTimeout(() => { el.style.display = 'none'; }, 6000);
+    }
+
+    function startResendTimer() {
+        let secs = 30;
+        resendBtn.disabled = true;
+        resendTimerEl.textContent = secs;
+        resendBtn.innerHTML = `Resend OTP (<span id="pageResendTimer">${secs}</span>s)`;
+        clearInterval(resendInterval);
+        resendInterval = setInterval(() => {
+            secs--;
+            const el = document.getElementById('pageResendTimer');
+            if (el) el.textContent = secs;
+            if (secs <= 0) {
+                clearInterval(resendInterval);
+                resendBtn.disabled = false;
+                resendBtn.textContent = 'Resend OTP';
+            }
+        }, 1000);
+    }
+
+    async function doSendOtp() {
+        step1Error.style.display = 'none';
+        const name   = document.getElementById('pb_name').value.trim();
+        const mobile = document.getElementById('pb_mobile').value.trim();
+        const city   = document.getElementById('pb_city').value.trim();
+
+        if (!name)   return showError(step1Error, 'Please enter your name.');
+        if (!/^[0-9]{10}$/.test(mobile)) return showError(step1Error, 'Enter a valid 10-digit mobile number.');
+
+        sendOtpBtn.disabled = true;
+        sendOtpBtn.innerHTML = '<span style="display:inline-block;width:16px;height:16px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;vertical-align:-3px;margin-right:6px;"></span> Sending...';
+
+        try {
+            const res = await fetch('/brochure/send-otp', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, mobile, city })
+            });
+            const data = await res.json();
+            if (data.success) {
+                step1.style.display = 'none';
+                step2.style.display = 'block';
+                phoneDisplay.textContent = '+91 ' + mobile;
+                otpBoxes[0].focus();
+                startResendTimer();
+            } else {
+                showError(step1Error, data.message || 'Failed to send OTP. Try again.');
+            }
+        } catch (e) {
+            showError(step1Error, 'Network error. Please try again.');
+        } finally {
+            sendOtpBtn.disabled = false;
+            sendOtpBtn.innerHTML = '<i data-lucide="send" style="width:16px;height:16px;"></i> Send OTP';
+            lucide.createIcons();
+        }
+    }
+
+    sendOtpBtn.addEventListener('click', doSendOtp);
+
+    goBackBtn.addEventListener('click', () => {
+        step2.style.display = 'none';
+        step1.style.display = 'block';
+        clearOTPBoxes();
+        step2Error.style.display = 'none';
+        clearInterval(resendInterval);
+    });
+
+    resendBtn.addEventListener('click', async () => {
+        step2Error.style.display = 'none';
+        const name   = document.getElementById('pb_name').value.trim();
+        const mobile = document.getElementById('pb_mobile').value.trim();
+        const city   = document.getElementById('pb_city').value.trim();
+        resendBtn.disabled = true;
+        resendBtn.textContent = 'Sending...';
+        try {
+            const res = await fetch('/brochure/send-otp', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, mobile, city })
+            });
+            const data = await res.json();
+            if (data.success) {
+                clearOTPBoxes();
+                otpBoxes[0].focus();
+                startResendTimer();
+            } else {
+                showError(step2Error, data.message || 'Failed to resend OTP.');
+                resendBtn.disabled = false;
+                resendBtn.textContent = 'Resend OTP';
+            }
+        } catch (e) {
+            showError(step2Error, 'Network error. Please try again.');
+            resendBtn.disabled = false;
+            resendBtn.textContent = 'Resend OTP';
+        }
+    });
+
+    verifyBtn.addEventListener('click', async () => {
+        step2Error.style.display = 'none';
+        const otp = getOTPValue();
+        if (otp.length < 6) return showError(step2Error, 'Please enter all 6 digits of the OTP.');
+
+        verifyBtn.disabled = true;
+        verifyBtn.innerHTML = '<span style="display:inline-block;width:16px;height:16px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;vertical-align:-3px;margin-right:6px;"></span> Verifying...';
+
+        try {
+            const res = await fetch('/brochure/verify-otp', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ otp })
+            });
+            const data = await res.json();
+            if (data.success) {
+                clearInterval(resendInterval);
+                step2.style.display = 'none';
+                step3.style.display = 'block';
+                lucide.createIcons();
+                // Auto-trigger download
+                window.open('/naxzora-brochure.pdf', '_blank');
+            } else {
+                showError(step2Error, data.message || 'Invalid OTP. Please try again.');
+                // Shake animation on OTP boxes
+                otpBoxes.forEach(b => {
+                    b.style.borderColor = '#ef4444';
+                    setTimeout(() => { b.style.borderColor = '#e5e7eb'; }, 1500);
+                });
+            }
+        } catch (e) {
+            showError(step2Error, 'Network error. Please try again.');
+        } finally {
+            verifyBtn.disabled = false;
+            verifyBtn.innerHTML = '<i data-lucide="download" style="width:16px;height:16px;"></i> Verify & Download';
+            lucide.createIcons();
+        }
+    });
+
+    // Allow Enter key on last OTP box to submit
+    otpBoxes[5].addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') verifyBtn.click();
+    });
+
+    startOverBtn.addEventListener('click', () => {
+        step3.style.display = 'none';
+        step1.style.display = 'block';
+        document.getElementById('pb_name').value = '';
+        document.getElementById('pb_mobile').value = '';
+        document.getElementById('pb_city').value = '';
+        clearOTPBoxes();
+    });
+});
+</script>
+
+<style>
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+
+<%- include('partials/footer') %>

@@ -135,12 +135,29 @@ async function runAutoMigration() {
             CREATE TABLE IF NOT EXISTS brochure_requests (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 name VARCHAR(100) NOT NULL,
-                email VARCHAR(100) NOT NULL,
-                mobile VARCHAR(20),
+                mobile VARCHAR(20) NOT NULL,
                 city VARCHAR(100),
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
+
+        // Migration: remove email column if it still exists (for existing deployments)
+        try {
+            const [cols] = await pool.query(`SHOW COLUMNS FROM brochure_requests LIKE 'email'`);
+            if (cols.length > 0) {
+                await pool.query(`ALTER TABLE brochure_requests DROP COLUMN email`);
+                console.log('🔧 Dropped email column from brochure_requests');
+            }
+        } catch(e) { /* table may not exist yet — safe to ignore */ }
+
+        // Migration: ensure mobile is NOT NULL (for existing deployments)
+        try {
+            const [mobileCols] = await pool.query(`SHOW COLUMNS FROM brochure_requests LIKE 'mobile'`);
+            if (mobileCols.length > 0 && mobileCols[0].Null === 'YES') {
+                await pool.query(`ALTER TABLE brochure_requests MODIFY COLUMN mobile VARCHAR(20) NOT NULL`);
+                console.log('🔧 Made mobile NOT NULL in brochure_requests');
+            }
+        } catch(e) { /* ignore */ }
 
         // Check if categories need seeding
         const [rows] = await pool.query('SELECT COUNT(*) as count FROM categories');
@@ -485,18 +502,18 @@ const db = {
     },
 
     // Brochure Requests
-    async addBrochureRequest(name, email, mobile, city) {
+    async addBrochureRequest(name, mobile, city) {
         if (useJSON) {
             const data = getJSONData();
             const id = data.brochure_requests.length > 0 ? Math.max(...data.brochure_requests.map(b => b.id)) + 1 : 1;
-            const newRequest = { id, name, email, mobile, city, created_at: new Date() };
+            const newRequest = { id, name, mobile, city, created_at: new Date() };
             data.brochure_requests.push(newRequest);
             saveJSONData();
             return id;
         }
         const [result] = await pool.query(
-            'INSERT INTO brochure_requests (name, email, mobile, city) VALUES (?, ?, ?, ?)',
-            [name, email, mobile, city]
+            'INSERT INTO brochure_requests (name, mobile, city) VALUES (?, ?, ?)',
+            [name, mobile, city]
         );
         return result.insertId;
     },

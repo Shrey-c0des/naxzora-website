@@ -85,7 +85,7 @@
             <li><a href="/about" class="<%= typeof currentPage !== 'undefined' && currentPage === 'about' ? 'active' : '' %>">About</a></li>
             <li><a href="/products" class="<%= typeof currentPage !== 'undefined' && currentPage === 'products' ? 'active' : '' %>">Products</a></li>
             <li><a href="/contact" class="<%= typeof currentPage !== 'undefined' && currentPage === 'contact' ? 'active' : '' %>">Contact</a></li>
-            <li><button class="btn" id="openBrochureModal" style="padding: 0.5rem 1rem; font-size: 0.75rem;">Download Brochure</button></li>
+            <li><a href="/brochure" class="btn" id="openBrochureModal" style="padding: 0.5rem 1rem; font-size: 0.75rem;">Download Brochure</a></li>
         </ul>
 
         <!-- Waves on RIGHT side -->
@@ -93,33 +93,213 @@
     </div>
 </nav>
 
-<!-- Brochure Modal -->
+<!-- Brochure Modal (OTP Flow) -->
 <div id="brochureModal" class="modal">
     <div class="modal-content">
         <span class="close-btn" id="closeBrochureModal">&times;</span>
-        <h2 style="margin-bottom: 1rem; color: var(--primary);">Download Brochure</h2>
-        <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Please provide your details to download the latest NAXZORA product brochure.</p>
-        
-        <form action="/brochure" method="POST" id="brochureForm">
+
+        <!-- Step 1: Details -->
+        <div id="brochureStep1">
+            <h2 style="margin-bottom: 0.5rem; color: var(--primary);">Download Brochure</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.9rem;">Enter your details to receive an OTP and download the brochure.</p>
+            <div id="brochureStep1Error" style="display:none; background:#fee2e2; color:#b91c1c; border-radius:8px; padding:0.6rem 1rem; margin-bottom:1rem; font-size:0.875rem;"></div>
             <div style="margin-bottom: 1rem;">
                 <label for="b_name" style="display: block; margin-bottom: 0.3rem; color: var(--text-secondary); font-size: 0.9rem;">Name *</label>
-                <input type="text" id="b_name" name="name" required class="form-input">
+                <input type="text" id="b_name" name="name" required class="form-input" placeholder="Your full name">
             </div>
             <div style="margin-bottom: 1rem;">
                 <label for="b_mobile" style="display: block; margin-bottom: 0.3rem; color: var(--text-secondary); font-size: 0.9rem;">Mobile Number *</label>
-                <input type="tel" id="b_mobile" name="mobile" required class="form-input">
-            </div>
-            <div style="margin-bottom: 1rem;">
-                <label for="b_email" style="display: block; margin-bottom: 0.3rem; color: var(--text-secondary); font-size: 0.9rem;">Email Address *</label>
-                <input type="email" id="b_email" name="email" required class="form-input">
+                <div style="display:flex; gap:0.5rem;">
+                    <span style="display:flex; align-items:center; background:var(--bg-alt,#f5f5f5); border:1px solid #ddd; border-radius:8px; padding:0 0.75rem; font-size:0.9rem; color:var(--text-secondary); white-space:nowrap;">+91</span>
+                    <input type="tel" id="b_mobile" name="mobile" required class="form-input" placeholder="10-digit mobile number" maxlength="10" pattern="[0-9]{10}" style="flex:1;">
+                </div>
             </div>
             <div style="margin-bottom: 1.5rem;">
-                <label for="b_city" style="display: block; margin-bottom: 0.3rem; color: var(--text-secondary); font-size: 0.9rem;">City *</label>
-                <input type="text" id="b_city" name="city" required class="form-input">
+                <label for="b_city" style="display: block; margin-bottom: 0.3rem; color: var(--text-secondary); font-size: 0.9rem;">City</label>
+                <input type="text" id="b_city" name="city" class="form-input" placeholder="Your city (optional)">
             </div>
-            <button type="submit" class="btn" style="width: 100%;">Download Now</button>
-        </form>
+            <button type="button" id="brochureSendOtp" class="btn" style="width: 100%;">Send OTP</button>
+        </div>
+
+        <!-- Step 2: OTP Verification -->
+        <div id="brochureStep2" style="display:none;">
+            <h2 style="margin-bottom: 0.5rem; color: var(--primary);">Verify OTP</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 0.5rem; font-size: 0.9rem;">An OTP has been sent to <strong id="brochurePhoneDisplay"></strong></p>
+            <div id="brochureStep2Error" style="display:none; background:#fee2e2; color:#b91c1c; border-radius:8px; padding:0.6rem 1rem; margin-bottom:1rem; font-size:0.875rem;"></div>
+            <div style="margin-bottom: 1rem;">
+                <label for="b_otp" style="display: block; margin-bottom: 0.3rem; color: var(--text-secondary); font-size: 0.9rem;">Enter OTP *</label>
+                <input type="text" id="b_otp" maxlength="6" class="form-input" placeholder="6-digit OTP" style="letter-spacing:0.3em; font-size:1.2rem; text-align:center;">
+            </div>
+            <button type="button" id="brochureVerifyOtp" class="btn" style="width: 100%; margin-bottom:0.75rem;">Verify &amp; Download</button>
+            <button type="button" id="brochureResendOtp" class="btn btn-outline" style="width: 100%; font-size:0.85rem;" disabled>Resend OTP (<span id="brochureResendTimer">30</span>s)</button>
+        </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('brochureModal');
+    const openBtn = document.getElementById('openBrochureModal');
+    const closeBtn = document.getElementById('closeBrochureModal');
+    const step1 = document.getElementById('brochureStep1');
+    const step2 = document.getElementById('brochureStep2');
+    const sendOtpBtn = document.getElementById('brochureSendOtp');
+    const verifyOtpBtn = document.getElementById('brochureVerifyOtp');
+    const resendOtpBtn = document.getElementById('brochureResendOtp');
+    const step1Error = document.getElementById('brochureStep1Error');
+    const step2Error = document.getElementById('brochureStep2Error');
+    const phoneDisplay = document.getElementById('brochurePhoneDisplay');
+    const resendTimerEl = document.getElementById('brochureResendTimer');
+
+    let resendInterval = null;
+
+    // Open modal when nav button clicked (prevents navigation)
+    if (openBtn) {
+        openBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            modal.style.display = 'flex';
+        });
+    }
+
+    // Close modal
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => { modal.style.display = 'none'; });
+    }
+    window.addEventListener('click', (e) => {
+        if (e.target === modal) modal.style.display = 'none';
+    });
+
+    function showStep1Error(msg) {
+        step1Error.textContent = msg;
+        step1Error.style.display = 'block';
+    }
+    function showStep2Error(msg) {
+        step2Error.textContent = msg;
+        step2Error.style.display = 'block';
+    }
+
+    function startResendTimer() {
+        let secs = 30;
+        resendOtpBtn.disabled = true;
+        resendTimerEl.textContent = secs;
+        clearInterval(resendInterval);
+        resendInterval = setInterval(() => {
+            secs--;
+            resendTimerEl.textContent = secs;
+            if (secs <= 0) {
+                clearInterval(resendInterval);
+                resendOtpBtn.disabled = false;
+                resendOtpBtn.textContent = 'Resend OTP';
+            }
+        }, 1000);
+    }
+
+    async function sendOtp() {
+        step1Error.style.display = 'none';
+        const name = document.getElementById('b_name').value.trim();
+        const mobile = document.getElementById('b_mobile').value.trim();
+        const city = document.getElementById('b_city').value.trim();
+
+        if (!name) return showStep1Error('Please enter your name.');
+        if (!/^[0-9]{10}$/.test(mobile)) return showStep1Error('Enter a valid 10-digit mobile number.');
+
+        sendOtpBtn.disabled = true;
+        sendOtpBtn.textContent = 'Sending OTP...';
+
+        try {
+            const res = await fetch('/brochure/send-otp', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, mobile, city })
+            });
+            const data = await res.json();
+            if (data.success) {
+                step1.style.display = 'none';
+                step2.style.display = 'block';
+                phoneDisplay.textContent = '+91 ' + mobile;
+                startResendTimer();
+            } else {
+                showStep1Error(data.message || 'Failed to send OTP. Try again.');
+            }
+        } catch (err) {
+            showStep1Error('Network error. Please try again.');
+        } finally {
+            sendOtpBtn.disabled = false;
+            sendOtpBtn.textContent = 'Send OTP';
+        }
+    }
+
+    if (sendOtpBtn) sendOtpBtn.addEventListener('click', sendOtp);
+
+    if (resendOtpBtn) {
+        resendOtpBtn.addEventListener('click', async () => {
+            step2Error.style.display = 'none';
+            resendOtpBtn.disabled = true;
+            resendOtpBtn.textContent = 'Sending...';
+            try {
+                const mobile = document.getElementById('b_mobile').value.trim();
+                const name = document.getElementById('b_name').value.trim();
+                const city = document.getElementById('b_city').value.trim();
+                const res = await fetch('/brochure/send-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, mobile, city })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    startResendTimer();
+                } else {
+                    showStep2Error(data.message || 'Failed to resend OTP.');
+                    resendOtpBtn.disabled = false;
+                    resendOtpBtn.textContent = 'Resend OTP';
+                }
+            } catch (err) {
+                showStep2Error('Network error. Please try again.');
+                resendOtpBtn.disabled = false;
+                resendOtpBtn.textContent = 'Resend OTP';
+            }
+        });
+    }
+
+    if (verifyOtpBtn) {
+        verifyOtpBtn.addEventListener('click', async () => {
+            step2Error.style.display = 'none';
+            const otp = document.getElementById('b_otp').value.trim();
+            if (!otp || otp.length < 4) return showStep2Error('Please enter the OTP.');
+
+            verifyOtpBtn.disabled = true;
+            verifyOtpBtn.textContent = 'Verifying...';
+
+            try {
+                const res = await fetch('/brochure/verify-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ otp })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    modal.style.display = 'none';
+                    // Open the brochure PDF in a new tab
+                    window.open('/naxzora-brochure.pdf', '_blank');
+                    // Reset form
+                    step1.style.display = 'block';
+                    step2.style.display = 'none';
+                    document.getElementById('b_name').value = '';
+                    document.getElementById('b_mobile').value = '';
+                    document.getElementById('b_city').value = '';
+                    document.getElementById('b_otp').value = '';
+                } else {
+                    showStep2Error(data.message || 'Invalid OTP. Please try again.');
+                }
+            } catch (err) {
+                showStep2Error('Network error. Please try again.');
+            } finally {
+                verifyOtpBtn.disabled = false;
+                verifyOtpBtn.textContent = 'Verify & Download';
+            }
+        });
+    }
+});
+</script>
 
 <main>
