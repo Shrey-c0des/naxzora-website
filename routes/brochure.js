@@ -117,13 +117,24 @@ router.post('/send-otp', async (req, res) => {
             // Overwrite stored OTP with '123456' for easy testing when API key is missing or gateway fails
             req.session.brochureOTP.otp = '123456';
             const displayReason = result.fallbackReason ? ` (Fallback: Enter 123456)` : ' (Dev Mode: Enter 123456)';
-            return res.json({ 
-                success: true, 
-                message: `OTP sent successfully.${displayReason}` 
+
+            // Explicitly save session before responding — critical for deployed environments
+            return req.session.save((err) => {
+                if (err) console.error('Session save error:', err);
+                console.log('[OTP] Session saved for', mobile.trim(), '| Session ID:', req.sessionID);
+                return res.json({ 
+                    success: true, 
+                    message: `OTP sent successfully.${displayReason}` 
+                });
             });
         }
 
-        return res.json({ success: true, message: 'OTP sent successfully.' });
+        // Explicitly save session before responding
+        return req.session.save((err) => {
+            if (err) console.error('Session save error:', err);
+            console.log('[OTP] Session saved for', mobile.trim(), '| Session ID:', req.sessionID);
+            return res.json({ success: true, message: 'OTP sent successfully.' });
+        });
     } catch (err) {
         console.error('Error sending OTP:', err.message);
         return res.json({ success: false, message: 'Failed to send OTP. Please try again.' });
@@ -135,6 +146,8 @@ router.post('/verify-otp', async (req, res) => {
     try {
         const { otp } = req.body;
         const sessionData = req.session.brochureOTP;
+
+        console.log('[VERIFY] Session ID:', req.sessionID, '| Has brochureOTP:', !!sessionData);
 
         if (!sessionData) {
             return res.json({ success: false, message: 'Session expired. Please start again.' });
